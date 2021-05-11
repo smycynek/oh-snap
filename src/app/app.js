@@ -1,7 +1,8 @@
 import angular from 'angular';
 
-import '../style/app.css';
+
 import 'bootstrap/dist/css/bootstrap.css';
+import '../style/app.css';
 
 import {drawRandomCircle, drawRandomLine} from './drawUtil';
 
