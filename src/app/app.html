@@ -1,13 +1,19 @@
 <main>
   <h1>Oh, snap!</h1>
-
+  <h2>(desktop only currently)</h2>
 <body ng-controller="RenderCtrl" data-ng-init="mainRender()"></body>
 <div ng-app="app">
 <div>
   <button class='btn btn-primary' type="button" ng-click="drawRandomCircle()">Random Circle</button>
-  <button class='btn btn-primary' type="button" ng-click="drawRandomLine()">Random Line</button>
+  <button class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
+  
+  <br/>
+  <input type = "checkbox" ng-click="toggleEndpoints()" >Show endpoints</input> <br/>
+  <input type = "checkbox" >Show midpoints</input> <br/>
+  <input type = "checkbox" >Show quadrants</input> <br/>
+
 </div>
-  <canvas width="500" height="500" id="line_area" style="border: 1px gray solid; float: left"></canvas>
+  <canvas width="500" height="500" id="line_area"></canvas>
 </div>
 
 </main>
