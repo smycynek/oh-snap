@@ -8,14 +8,9 @@
   <button class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
   
   <br/>
-  <input type = "checkbox" ng-click="toggleOverlay()">Show overlay</input> <br/>
-
-
-
   <div style="position: relative;">
-
-  <canvas width="500" height="500" id="line_area"  style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-  <canvas width="500" height="500" id="line_area_overlay" style="display: {{overlay}}; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+  <canvas ng-mousemove="showCoords($event)" width="500" height="500" id="line_area"  style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+  <canvas width="500" height="500" id="line_area_overlay" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
 </div>
 
 </div>
