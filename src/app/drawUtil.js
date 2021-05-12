@@ -1,16 +1,28 @@
 
 const canvas_id = 'line_area';
+const overlay_id = 'line_area_overlay';
 
 import {randomCircleData, randomLineData, midpoint, quadrants} from './geomUtil';
 
+export const getCanvas = (canvas_id) => {
+  return document.getElementById(canvas_id);
+};
+
 export const getContext = () => {
-  const canvas = document.getElementById(canvas_id);
-  const context = canvas.getContext("2d");
-  return context;
+  return getCanvas(canvas_id).getContext("2d");
 }
 
-const drawCircle = (x, y, r, style) => {
-  const context = getContext();
+export const getOverlayContext = () => {
+  return getCanvas(overlay_id).getContext("2d");
+};
+
+const drawCircle = (x, y, r, style, overlay) => {
+
+  var context = getContext();
+  if (overlay) {
+    context = getOverlayContext();
+  };
+
   if (style) {
     context.save();
     context.lineWidth=style.width;
@@ -31,7 +43,7 @@ const drawLine = (x1, y1, x2, y2) => {
 };
 
 export const highlightPoint = (x,y) => {
-  drawCircle(x, y, 5, {width:2, color:'#FF0000'});
+  drawCircle(x, y, 5, {width:2, color:'#FF0000'}, true);
 }
 
 export const drawRandomCircle = (showCenter=true, showQuadrants=true) => {

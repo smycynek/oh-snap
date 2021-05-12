@@ -19,10 +19,10 @@ const MODULE_NAME = 'app';
 angular.module(MODULE_NAME, [])
   .directive('app', app)
   .controller("RenderCtrl", function ($scope, $window, $http) {
-    $scope.showEndpoints = false;
+    $scope.overlay = "none";
 
-    $scope.toggleEndpoints = function () {
-      $scope.showEndpoints = ! $scope.showEndpoints;
+    $scope.toggleOverlay = function () {
+      $scope.overlay = ($scope.overlay == "none") ? "visible" : "none";
     };
 
     $scope.mainRender = function () {

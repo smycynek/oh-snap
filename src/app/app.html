@@ -8,12 +8,16 @@
   <button class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
   
   <br/>
-  <input type = "checkbox" ng-click="toggleEndpoints()" >Show endpoints</input> <br/>
-  <input type = "checkbox" >Show midpoints</input> <br/>
-  <input type = "checkbox" >Show quadrants</input> <br/>
+  <input type = "checkbox" ng-click="toggleOverlay()">Show overlay</input> <br/>
 
+
+
+  <div style="position: relative;">
+
+  <canvas width="500" height="500" id="line_area"  style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+  <canvas width="500" height="500" id="line_area_overlay" style="display: {{overlay}}; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 </div>
-  <canvas width="500" height="500" id="line_area"></canvas>
+
 </div>
 
 </main>
