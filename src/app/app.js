@@ -3,9 +3,10 @@ import angular from 'angular';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../style/app.css';
+import { v4 as uuidv4 } from 'uuid';
 
 import {drawRandomCircle, drawRandomLine, getMousePos, drawHighlight} from './drawUtil';
-import {uuidv4 , midpoint, distance} from './geomUtil';
+import {pseudo_uuid , midpoint, distance} from './geomUtil';
 
 let app = () => {
   return {
@@ -36,14 +37,17 @@ angular.module(MODULE_NAME, [])
     };
     $scope.lineStore = {};
     $scope.nearAnyMidPoint = (point) => {
-        console.log(point);
         var lines = Object.values($scope.lineStore)
         for (var ii = 0; ii != lines.length; ii++) {
           const mp = midpoint(lines[ii].x1, lines[ii].y1, lines[ii].x2, lines[ii].y2);
-          console.log(mp);
-          console.log("--")
-          if (distance(mp.x, mp.y, point.x, point.y) < 20) {
+          if (distance(mp.x, mp.y, point.x, point.y) < 15) {
+            console.log(point);
+            console.log(mp)
+            console.log("--");
             drawHighlight(mp);
+          }
+          else {
+            console.log("Nothing found.")
           }
         }
         

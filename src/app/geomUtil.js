@@ -14,7 +14,6 @@ const LINE_MAX = 450;
 
 export const randomIntBounds = (min, max) => {
   var value = Math.floor(Math.random() * (max-min)) + min;
-  console.log(value);
   return value;
 }
 
@@ -30,10 +29,3 @@ export const randomLineData = () => {
     y2: randomLinePosition()
   };
 };
-
-export const uuidv4 = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}

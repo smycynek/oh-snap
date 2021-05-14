@@ -21,7 +21,8 @@
   "homepage": "https://stevenvictor.net/snap",
   "dependencies": {
     "angular": "^1.7.0",
-    "bootstrap": "^5.0.0"
+    "bootstrap": "^5.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "ajv": "^6.4.0",
