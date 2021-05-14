@@ -1,9 +1,14 @@
 /* styles in src/style directory are applied to the whole page */
 
-h1,h2,body {
+h1,h2,body,p, button {
   font-family: Arial, Helvetica, sans-serif;
-
 }
+
+h1,h2,button,p {
+margin-left: 10px;
+padding-left: 10px;
+}
+
 main {
   margin: 0.0em;
   padding:  0.0em;

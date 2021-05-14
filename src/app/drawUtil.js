@@ -2,12 +2,11 @@
 const canvas_id = 'line_area';
 const overlay_id = 'line_area_overlay';
 
-import {randomCircleData, randomLineData, midpoint, quadrants} from './geomUtil';
+import {randomLineData} from './geomUtil';
 
 export const getCanvas = (canvas_id) => {
   const canvas = document.getElementById(canvas_id);
   return canvas;
-
 };
 
 const getNumberFromPx = (px) => {
@@ -15,7 +14,6 @@ const getNumberFromPx = (px) => {
     return Number(numeric);
 }
 export const getMousePos = (moveEvent) => {
-  console.log("get")
   var canvas = getCanvas(canvas_id)
   var rect = canvas.getBoundingClientRect();
 
@@ -66,36 +64,9 @@ export const highlightPoint = (x,y) => {
   drawCircle(x, y, 5, {width:2, color:'#FF0000'}, true);
 }
 
-export const drawRandomCircle = (showCenter=true, showQuadrants=true) => {
-  var circle = randomCircleData();
-  drawCircle(circle.x, circle.y, circle.radius);
-  if (showCenter) {
-    highlightPoint(circle.x, circle.y);
-  }
-
-  if (showQuadrants) {
-    const circleQuads = quadrants(circle.x, circle.y, circle.radius);
-    console.log(circleQuads);
-    highlightPoint(circleQuads[0].x, circleQuads[0].y);
-    highlightPoint(circleQuads[1].x, circleQuads[1].y);
-    highlightPoint(circleQuads[2].x, circleQuads[2].y);
-    highlightPoint(circleQuads[3].x, circleQuads[3].y);
-  }
-  
-}
-
-export const drawRandomLine = (showEndpoints=true, showMidPoint=true) => {
+export const drawRandomLine = () => {
   var line = randomLineData();
   drawLine(line.x1, line.y1, line.x2, line.y2);
-  //if (showEndpoints) {
-  //  highlightPoint(line.x1, line.y1);
-  //  highlightPoint(line.x2, line.y2);
-  //}
-  
- // if (showMidPoint) {
-  //  const linemp = midpoint(line.x1, line.y1, line.x2, line.y2);
-   // highlightPoint(linemp.x, linemp.y);
- // }
   return line;
 }
 

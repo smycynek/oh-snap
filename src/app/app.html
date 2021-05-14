@@ -1,12 +1,11 @@
 <main>
   <h1>Oh, snap!</h1>
-  <h2>(desktop only currently)</h2>
+  <h2>A simple object snap demo</h2>
+  <p>(desktop only currently)</p>
 <body ng-controller="RenderCtrl" data-ng-init="mainRender()"></body>
 <div ng-app="app">
 <div>
-  <button class='btn btn-primary' type="button" ng-click="drawRandomCircle()">Random Circle</button>
   <button class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
-  
   <br/>
   <div style="position: relative;">
   <canvas ng-mousemove="showCoords($event)" width="500" height="500" id="line_area"  style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>

@@ -31,10 +31,6 @@ angular.module(MODULE_NAME, [])
         $scope.nearAnyMidPoint(resultPoint);
     };
 
-    $scope.test = () => {
-      alert("TEST");
-    };
-
     $scope.mainRender = function () {
       console.log("Main render");
     };
@@ -46,7 +42,7 @@ angular.module(MODULE_NAME, [])
           const mp = midpoint(lines[ii].x1, lines[ii].y1, lines[ii].x2, lines[ii].y2);
           console.log(mp);
           console.log("--")
-          if (distance(mp.x, mp.y, point.x, point.y) < 50) {
+          if (distance(mp.x, mp.y, point.x, point.y) < 20) {
             drawHighlight(mp);
           }
         }
@@ -65,15 +61,9 @@ angular.module(MODULE_NAME, [])
       console.log($scope.lineStore[line.id]);
     };
 
-    $scope.drawRandomCircle = function () {
-      drawRandomCircle();
-    }
-  
     $scope.drawRandomLine = function () {
       const line = drawRandomLine();
       $scope.storeLine(line.x1, line.y1, line.x2, line.y2);
-
-  
     }
   
   });
