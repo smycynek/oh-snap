@@ -1,7 +1,7 @@
 
 const canvas_id = 'line_area';
 
-import {randomLineData} from './geomUtil';
+import {randomLineData, randomCircleData} from './geomUtil';
 
 export const getCanvas = (canvas_id) => {
   const canvas = document.getElementById(canvas_id);
@@ -17,6 +17,7 @@ export const getMousePos = (moveEvent) => {
   var rect = canvas.getBoundingClientRect();
 
   var style = canvas.currentStyle || window.getComputedStyle(canvas);
+  // TODO -- calculate offset once at startup.
   const offset = (getNumberFromPx(style.marginTop) + getNumberFromPx(style.paddingTop));
   return {
     x: moveEvent.clientX - (rect.left + offset),
@@ -29,7 +30,7 @@ export const getContext = () => {
   return getCanvas(canvas_id).getContext("2d");
 }
 
-const drawCircle = (x, y, r, style) => {
+export const drawCircle = (x, y, r, style) => {
   var context = getContext();
   if (style) {
     context.save();
@@ -64,6 +65,14 @@ export const drawRandomLine = () => {
   drawLine(line.x1, line.y1, line.x2, line.y2); // odd antialiasing issue workaround
   return line;
 }
+
+export const drawRandomCircle = () => {
+  var circle = randomCircleData();
+  drawCircle(circle.x, circle.y, circle.r);
+  drawCircle(circle.x, circle.y, circle.r); // odd antialiasing issue workaround
+  return circle;
+}
+
 
 export const drawHighlight = (point) => {
   highlightPoint(point.x, point.y);
