@@ -52,11 +52,11 @@ export const drawLine = (x1, y1, x2, y2) => {
 };
 
 export const highlightPoint = (x,y) => {
-  drawCircle(x, y, 5, {width:2, color:'#FF0000'});
+  drawCircle(x, y, 5, {width:1, color:'#FF0000'});
 }
 
 export const clearPointHighlight = (x,y) => {
-  drawCircle(x, y, 5, {width:2, color:'#FFFFFF'});
+  drawCircle(x, y, 5, {width:1, color:'#FFFFFF'});
 }
 export const drawRandomLine = () => {
   var line = randomLineData();

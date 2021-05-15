@@ -1,24 +1,22 @@
 /* styles in src/style directory are applied to the whole page */
 
-h1,h2,body,p, button {
-  font-family: Arial, Helvetica, sans-serif;
+input,button {
+  margin-left: 10px;
+  padding-left: 10px;
 }
 
-h1,h2,button,p {
-margin-left: 10px;
-padding-left: 10px;
+h1,h2,body,p {
+  margin-left: 5px;
+  padding-left: 5px;
 }
+
 
 main {
   margin: 0.0em;
   padding:  0.0em;
-  font-family: Arial, Helvetica, sans-serif;
   display: block;
 }
 
-footer {
-  font-size: 0.8em;
-}
 canvas {
   margin: 10px;
   padding: 10px;

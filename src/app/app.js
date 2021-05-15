@@ -33,6 +33,8 @@ angular.module(MODULE_NAME, [])
         }
     };
 
+    $scope.snapRange = 12;
+
     $scope.endpointSnap = false;
     $scope.midpointSnap = false;
 
@@ -52,7 +54,7 @@ angular.module(MODULE_NAME, [])
         var lines = Object.values($scope.lineStore)
         for (var ii = 0; ii != lines.length; ii++) {
           const mp = midpoint(lines[ii].x1, lines[ii].y1, lines[ii].x2, lines[ii].y2);
-          if (distance(mp.x, mp.y, point.x, point.y) < 25) {
+          if (distance(mp.x, mp.y, point.x, point.y) < $scope.snapRange) {
             drawHighlight(mp);
           }
           else {
@@ -73,14 +75,14 @@ angular.module(MODULE_NAME, [])
           x: lines[ii].x2,
           y: lines[ii].y2,
         }
-        if (distance(ep1.x, ep1.y, point.x, point.y) < 25) {
+        if (distance(ep1.x, ep1.y, point.x, point.y) < $scope.snapRange) {
           drawHighlight(ep1);
         }
         else {
           clearHighlight(ep1);
           drawLine(lines[ii].x1, lines[ii].y1, lines[ii].x2, lines[ii].y2);
         }
-        if (distance(ep2.x, ep2.y, point.x, point.y) < 25) {
+        if (distance(ep2.x, ep2.y, point.x, point.y) < $scope.snapRange) {
           drawHighlight(ep2);
         }
         else {
