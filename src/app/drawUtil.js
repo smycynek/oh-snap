@@ -1,6 +1,5 @@
 
 const canvas_id = 'line_area';
-const overlay_id = 'line_area_overlay';
 
 import {randomLineData} from './geomUtil';
 
@@ -30,17 +29,8 @@ export const getContext = () => {
   return getCanvas(canvas_id).getContext("2d");
 }
 
-export const getOverlayContext = () => {
-  return getCanvas(overlay_id).getContext("2d");
-};
-
-const drawCircle = (x, y, r, style, overlay) => {
-
+const drawCircle = (x, y, r, style) => {
   var context = getContext();
-  if (overlay) {
-    context = getOverlayContext();
-  };
-
   if (style) {
     context.save();
     context.lineWidth=style.width;
@@ -52,8 +42,9 @@ const drawCircle = (x, y, r, style, overlay) => {
   context.restore();
 };
 
-const drawLine = (x1, y1, x2, y2) => {
+export const drawLine = (x1, y1, x2, y2) => {
   const context = getContext();
+  context.lineWidth=1;
   context.beginPath();
   context.moveTo(x1, y1);
   context.lineTo(x2, y2);
@@ -61,15 +52,23 @@ const drawLine = (x1, y1, x2, y2) => {
 };
 
 export const highlightPoint = (x,y) => {
-  drawCircle(x, y, 5, {width:2, color:'#FF0000'}, true);
+  drawCircle(x, y, 5, {width:2, color:'#FF0000'});
 }
 
+export const clearPointHighlight = (x,y) => {
+  drawCircle(x, y, 5, {width:2, color:'#FFFFFF'});
+}
 export const drawRandomLine = () => {
   var line = randomLineData();
   drawLine(line.x1, line.y1, line.x2, line.y2);
+  drawLine(line.x1, line.y1, line.x2, line.y2); // odd antialiasing issue workaround
   return line;
 }
 
 export const drawHighlight = (point) => {
   highlightPoint(point.x, point.y);
+}
+
+export const clearHighlight = (point) => {
+  clearPointHighlight(point.x, point.y);
 }

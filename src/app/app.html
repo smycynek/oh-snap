@@ -6,10 +6,11 @@
 <div ng-app="app">
 <div>
   <button class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
+  <input type = "checkbox" ng-click=toggleMidpoint()>Snap to midpoint </input>
+  <input type = "checkbox" ng-click=toggleEndpoint()>Snap to endpoint</input>
   <br/>
   <div style="position: relative;">
   <canvas ng-mousemove="showCoords($event)" width="500" height="500" id="line_area"  style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
-  <canvas width="500" height="500" id="line_area_overlay" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
 </div>
 
 </div>
