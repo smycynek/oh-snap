@@ -54,51 +54,40 @@ angular.module(MODULE_NAME, [])
     $scope.mainRender = function () {
     };
 
-    $scope.highlightOrClear = (geomPoint, mousePoint, line, color) => {
-      if (distance(geomPoint.x, geomPoint.y, mousePoint.x, mousePoint.y) < $scope.snapRange) {
+    $scope.highlightOrClear = (geomPoint, mousePoint, redrawData, redrawFunc, color) => {
+      if (distance(geomPoint, mousePoint) < $scope.snapRange) {
         drawHighlight(geomPoint, color);
         return true;
       }
       clearHighlight(geomPoint);
-      drawLine(line.x1, line.y1, line.x2, line.y2, { color: '#FFFFFF', width: 2 });
-      drawLine(line.x1, line.y1, line.x2, line.y2);
-      return false;
-    };
-
-    $scope.highlightOrClearC = (geomPoint, mousePoint, circle, color) => {
-      if (distance(geomPoint.x, geomPoint.y, mousePoint.x, mousePoint.y) < $scope.snapRange) {
-        drawHighlight(geomPoint, color);
-        return true;
-      }
-
-      clearHighlight(geomPoint);
-      drawCircle(circle.x, circle.y, circle.r, { color: '#FFFFFF', width: 2 });
-      drawCircle(circle.x, circle.y, circle.r);
+      redrawFunc(redrawData, { color: '#FFFFFF', width: 2 });
+      redrawFunc(redrawData);
       return false;
     };
 
     $scope.nearAnyMidPoint = (mousePoint) => {
       const lines = Object.values($scope.lineStore);
       for (let ii = 0; ii !== lines.length; ii++) {
-        const midp = midpoint(lines[ii].x1, lines[ii].y1, lines[ii].x2, lines[ii].y2);
-        $scope.highlightOrClear(midp, mousePoint, lines[ii], '#FF0000');
+        const lineMidpoint = midpoint(lines[ii]);
+        $scope.highlightOrClear(lineMidpoint, mousePoint, lines[ii], drawLine, '#FF0000');
       }
     };
 
     $scope.nearAnyEndPoint = (mousePoint) => {
       const lines = Object.values($scope.lineStore);
       for (let ii = 0; ii !== lines.length; ii++) {
-        const ep1 = {
+        const endpoint1 = {
           x: lines[ii].x1,
           y: lines[ii].y1,
         };
-        // TODO -- consistent interface of point vs x,y params
-        const ep2 = {
+        const endpoint2 = {
           x: lines[ii].x2,
           y: lines[ii].y2,
         };
-        $scope.highlightOrClear(ep1, mousePoint, lines[ii], '#00FF00');
-        $scope.highlightOrClear(ep2, mousePoint, lines[ii], '#00FF00');
+        const finished = $scope.highlightOrClear(endpoint1, mousePoint, lines[ii], drawLine, '#00FF00');
+        if (!finished) {
+          $scope.highlightOrClear(endpoint2, mousePoint, lines[ii], drawLine, '#00FF00');
+        }
       }
     };
 
@@ -109,7 +98,7 @@ angular.module(MODULE_NAME, [])
           x: circles[ii].x,
           y: circles[ii].y,
         };
-        $scope.highlightOrClearC(cp1, mousePoint, circles[ii], '#0000FF');
+        $scope.highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, '#0000FF');
       }
     };
 
@@ -136,48 +125,48 @@ angular.module(MODULE_NAME, [])
 
         let finished = false;
 
-        finished = $scope.highlightOrClearC(q1, mousePoint, circles[ii], '#FF00FF');
+        finished = $scope.highlightOrClear(q1, mousePoint, circles[ii], drawCircle, '#FF00FF');
         if (!finished) {
-          finished = $scope.highlightOrClearC(q2, mousePoint, circles[ii], '#FF00FF');
+          finished = $scope.highlightOrClear(q2, mousePoint, circles[ii], drawCircle, '#FF00FF');
         }
         if (!finished) {
-          finished = $scope.highlightOrClearC(q3, mousePoint, circles[ii], '#FF00FF');
+          finished = $scope.highlightOrClear(q3, mousePoint, circles[ii], drawCircle, '#FF00FF');
         }
         if (!finished) {
-          finished = $scope.highlightOrClearC(q4, mousePoint, circles[ii], '#FF00FF');
+          finished = $scope.highlightOrClear(q4, mousePoint, circles[ii], drawCircle, '#FF00FF');
         }
       }
     };
 
-    $scope.storeLine = function (x1, y1, x2, y2) {
-      const line = {
+    $scope.storeLine = function (line) {
+      const lineData = {
         id: uuidv4(),
-        x1,
-        y1,
-        x2,
-        y2,
+        x1: line.x1,
+        y1: line.y1,
+        x2: line.x2,
+        y2: line.y2,
       };
-      $scope.lineStore[line.id] = line;
+      $scope.lineStore[lineData.id] = lineData;
     };
 
-    $scope.storeCircle = function (x, y, r) {
-      const circle = {
+    $scope.storeCircle = function (circle) {
+      const circleData = {
         id: uuidv4(),
-        x,
-        y,
-        r,
+        x: circle.x,
+        y: circle.y,
+        r: circle.r,
       };
-      $scope.circleStore[circle.id] = circle;
+      $scope.circleStore[circleData.id] = circleData;
     };
 
     $scope.drawRandomLine = function () {
       const line = drawRandomLine();
-      $scope.storeLine(line.x1, line.y1, line.x2, line.y2);
+      $scope.storeLine(line);
     };
 
     $scope.drawRandomCircle = function () {
       const circle = drawRandomCircle();
-      $scope.storeCircle(circle.x, circle.y, circle.r);
+      $scope.storeCircle(circle);
     };
   });
 

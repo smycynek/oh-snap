@@ -27,7 +27,7 @@ export const getMousePos = (moveEvent) => {
 
 export const getContext = () => getCanvas(mainCanvas).getContext('2d');
 
-export const drawCircle = (x, y, r, style) => {
+export const drawCircle = (circle, style) => {
   const context = getContext();
   if (style) {
     context.save();
@@ -35,12 +35,12 @@ export const drawCircle = (x, y, r, style) => {
     context.strokeStyle = style.color;
   }
   context.beginPath();
-  context.arc(x, y, r, 0, 2 * Math.PI);
+  context.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
   context.stroke();
   context.restore();
 };
 
-export const drawLine = (x1, y1, x2, y2, style) => {
+export const drawLine = (line, style) => {
   const context = getContext();
   if (style) {
     context.save();
@@ -48,29 +48,29 @@ export const drawLine = (x1, y1, x2, y2, style) => {
     context.strokeStyle = style.color;
   }
   context.beginPath();
-  context.moveTo(x1, y1);
-  context.lineTo(x2, y2);
+  context.moveTo(line.x1, line.y1);
+  context.lineTo(line.x2, line.y2);
   context.stroke();
   context.restore();
 };
 
 export const highlightPoint = (x, y, color) => {
-  drawCircle(x, y, 5, { width: 1, color });
+  drawCircle({ x, y, r: 5 }, { width: 1, color });
 };
 
 export const clearPointHighlight = (x, y) => {
-  drawCircle(x, y, 5, { width: 1, color: '#FFFFFF' });
+  drawCircle({ x, y, r: 5 }, { width: 1, color: '#FFFFFF' });
 };
 
 export const drawRandomLine = () => {
   const line = randomLineData();
-  drawLine(line.x1, line.y1, line.x2, line.y2);
+  drawLine(line);
   return line;
 };
 
 export const drawRandomCircle = () => {
   const circle = randomCircleData();
-  drawCircle(circle.x, circle.y, circle.r);
+  drawCircle(circle);
   return circle;
 };
 

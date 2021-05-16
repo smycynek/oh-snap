@@ -1,8 +1,11 @@
-export const distance = (x1, y1, x2, y2) => Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2));
+// eslint-disable-next-line arrow-body-style
+export const distance = (point1, point2) => {
+  return Math.sqrt(((point2.x - point1.x) ** 2) + ((point2.y - point1.y) ** 2));
+};
 
-export const midpoint = (x1, y1, x2, y2) => ({
-  x: (x2 + x1) / 2,
-  y: (y2 + y1) / 2,
+export const midpoint = (line) => ({
+  x: (line.x2 + line.x1) / 2,
+  y: (line.y2 + line.y1) / 2,
 });
 
 const LINE_MIN = 50;
