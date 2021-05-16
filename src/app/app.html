@@ -1,7 +1,9 @@
 <main>
   <h1>Oh, snap!</h1>
   <h2>A simple object snap demo</h2>
-  <p>Desktop only currently</p>
+  <p>Create a few lines and circles, and mouse over them
+    to see potential snap points.  Desktop browser only, currently.
+  </p>
 <body ng-controller="RenderCtrl" data-ng-init="mainRender()"></body>
 <div ng-app="app">
 
@@ -17,23 +19,23 @@
 
 
 <div>
-  <input type = "checkbox" ng-click=toggleMidpoint()>Snap to midpoint </input>
+  <input type = "checkbox" ng-model="midpointSnap">Snap to midpoint </input>
 </div>
 
 <div>
-  <input type = "checkbox" ng-click=toggleEndpoint()>Snap to endpoint</input>
+  <input type = "checkbox" ng-model="endpointSnap">Snap to endpoint</input>
 </div>
 
 <div>
-  <input type = "checkbox" ng-click=toggleCenterpoint()>Snap to centerpoint</input>
+  <input type = "checkbox" ng-model="centerpointSnap">Snap to centerpoint</input>
 </div>
 
 <div>
-  <input type = "checkbox" ng-click=toggleQuadrant()>Snap to quadrant</input>
+  <input type = "checkbox" ng-model="quadrantSnap">Snap to quadrant</input>
 </div>
 
 <div>
-  <input type = "range" ng-model="snapRange" min="20" max="100" value ="20">Snap range size</input>
+  <input type = "range" ng-model="snapRange" min="5" max="100" value ="15">Snap range size</input>
 </div>
 
 <div>

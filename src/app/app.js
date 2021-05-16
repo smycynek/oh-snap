@@ -1,3 +1,6 @@
+/* eslint-disable func-names */
+/* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
+
 import angular from 'angular';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -5,21 +8,22 @@ import '../style/app.css';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-  drawLine, drawCircle, drawRandomLine, drawRandomCircle, getMousePos, drawHighlight, clearHighlight,
+  drawLine, drawCircle, drawRandomLine, drawRandomCircle,
+  getMousePos, drawHighlight, clearHighlight,
 } from './drawUtil';
 import { midpoint, distance } from './geomUtil';
 
 const app = () => ({
+  // eslint-disable-next-line global-require
   template: require('./app.html'),
   controller: 'RenderCtrl',
-  // controllerAs: 'app'
 });
 
 const MODULE_NAME = 'app';
 
 angular.module(MODULE_NAME, [])
   .directive('app', app)
-  .controller('RenderCtrl', ($scope, $window, $http) => {
+  .controller('RenderCtrl', ($scope) => {
     $scope.showCoords = function (e) {
       const resultPoint = getMousePos(e);
       if ($scope.midpointSnap) {
@@ -38,40 +42,27 @@ angular.module(MODULE_NAME, [])
       }
     };
 
-    $scope.snapRange = 12;
-    $scope.endpointSnap = false;
+    $scope.snapRange = 15;
+    $scope.endpointSnap = true;
     $scope.midpointSnap = false;
-    $scope.centerpointSnap = false;
+    $scope.centerpointSnap = true;
     $scope.quadrantSnap = false;
 
     $scope.lineStore = {};
     $scope.circleStore = {};
 
-    $scope.toggleCenterpoint = function () {
-      $scope.centerpointSnap = !$scope.centerpointSnap;
-    };
-    $scope.toggleEndpoint = function () {
-      $scope.endpointSnap = !$scope.endpointSnap;
-    };
-
-    $scope.toggleMidpoint = function () {
-      $scope.midpointSnap = !$scope.midpointSnap;
-    };
-
-    $scope.toggleQuadrant = function () {
-      $scope.quadrantSnap = !$scope.quadrantSnap;
-    };
     $scope.mainRender = function () {
-      console.log('Main render');
     };
 
     $scope.highlightOrClear = (geomPoint, mousePoint, line) => {
       if (distance(geomPoint.x, geomPoint.y, mousePoint.x, mousePoint.y) < $scope.snapRange) {
         drawHighlight(geomPoint);
-      } else {
-        clearHighlight(geomPoint);
-        drawLine(line.x1, line.y1, line.x2, line.y2);
+        return true;
       }
+      clearHighlight(geomPoint);
+      drawLine(line.x1, line.y1, line.x2, line.y2, { color: '#FFFFFF', width: 2 });
+      drawLine(line.x1, line.y1, line.x2, line.y2);
+      return false;
     };
 
     $scope.highlightOrClearC = (geomPoint, mousePoint, circle) => {
@@ -81,6 +72,7 @@ angular.module(MODULE_NAME, [])
       }
 
       clearHighlight(geomPoint);
+      drawCircle(circle.x, circle.y, circle.r, { color: '#FFFFFF', width: 2 });
       drawCircle(circle.x, circle.y, circle.r);
       return false;
     };
@@ -166,7 +158,6 @@ angular.module(MODULE_NAME, [])
         y2,
       };
       $scope.lineStore[line.id] = line;
-      console.log($scope.lineStore[line.id]);
     };
 
     $scope.storeCircle = function (x, y, r) {
@@ -177,7 +168,6 @@ angular.module(MODULE_NAME, [])
         r,
       };
       $scope.circleStore[circle.id] = circle;
-      console.log($scope.circleStore[circle.id]);
     };
 
     $scope.drawRandomLine = function () {

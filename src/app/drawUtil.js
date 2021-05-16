@@ -1,20 +1,19 @@
-
 import { randomLineData, randomCircleData } from './geomUtil';
 
-const canvas_id = 'line_area';
+const mainCanvas = 'line_area';
 
-export const getCanvas = (canvas_id) => {
-  const canvas = document.getElementById(canvas_id);
+export const getCanvas = (canvasId) => {
+  const canvas = document.getElementById(canvasId);
   return canvas;
 };
 
 const getNumberFromPx = (px) => {
-    let numeric = px.substr(0, px.length-2);
-    return Number(numeric);
+  const numeric = px.substr(0, px.length - 2);
+  return Number(numeric);
 };
 
 export const getMousePos = (moveEvent) => {
-  const canvas = getCanvas(canvas_id);
+  const canvas = getCanvas(mainCanvas);
   const rect = canvas.getBoundingClientRect();
 
   const style = canvas.currentStyle || window.getComputedStyle(canvas);
@@ -26,9 +25,7 @@ export const getMousePos = (moveEvent) => {
   };
 };
 
-export const getContext = () => {
-  return getCanvas(canvas_id).getContext("2d");
-};
+export const getContext = () => getCanvas(mainCanvas).getContext('2d');
 
 export const drawCircle = (x, y, r, style) => {
   const context = getContext();
@@ -43,34 +40,37 @@ export const drawCircle = (x, y, r, style) => {
   context.restore();
 };
 
-export const drawLine = (x1, y1, x2, y2) => {
+export const drawLine = (x1, y1, x2, y2, style) => {
   const context = getContext();
-  context.lineWidth = 1;
+  if (style) {
+    context.save();
+    context.lineWidth = style.width;
+    context.strokeStyle = style.color;
+  }
   context.beginPath();
   context.moveTo(x1, y1);
   context.lineTo(x2, y2);
   context.stroke();
+  context.restore();
 };
 
 export const highlightPoint = (x, y) => {
-  drawCircle(x, y, 5, {width: 1, color: '#FF0000'});
+  drawCircle(x, y, 5, { width: 1, color: '#FF0000' });
 };
 
 export const clearPointHighlight = (x, y) => {
-  drawCircle(x, y, 5, {width: 1, color: '#FFFFFF'});
+  drawCircle(x, y, 5, { width: 1, color: '#FFFFFF' });
 };
 
 export const drawRandomLine = () => {
   const line = randomLineData();
   drawLine(line.x1, line.y1, line.x2, line.y2);
-  drawLine(line.x1, line.y1, line.x2, line.y2); // odd antialiasing issue workaround
   return line;
 };
 
 export const drawRandomCircle = () => {
   const circle = randomCircleData();
   drawCircle(circle.x, circle.y, circle.r);
-  drawCircle(circle.x, circle.y, circle.r); // odd antialiasing issue workaround
   return circle;
 };
 
