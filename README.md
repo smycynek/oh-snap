@@ -23,6 +23,9 @@ to x-y params, etc...
 
 2. Condense some repetitive code around iteration and highlight/erase.
 
+3. Consider storing currently selected snap point(s) to allow for more efficient erasing of highlights
+when the mouse moves out of range.
+
 ## Future features
 
 1. Support drawing new lines and rubber-banding endpoints to snap-points.
@@ -33,7 +36,7 @@ Are there libraries that do this already?  Of course -- this is just for fun.
 
 ## Usage
 
-yarn start -> <http://localhost:8080/snap>
+`yarn start` -> <http://localhost:8080/snap>
 
 ## Live demo
 
