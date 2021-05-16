@@ -10,13 +10,12 @@
 
 
 <div>
-  <button value="addLine" class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
+  <button id="addLine" class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
 </div>
 
 <div>
-  <button class='btn btn-primary' type="button" ng-click=drawRandomCircle()>Random Circle</button>
+  <button id="addCircle" class='btn btn-primary' type="button" ng-click=drawRandomCircle()>Random Circle</button>
 </div>
-
 
 <div>
   <input type = "checkbox" ng-model="midpointSnap">Snap to midpoint </input>
@@ -35,7 +34,7 @@
 </div>
 
 <div>
-  <input type = "range" ng-model="snapRange" min="15" max="100" value ="15">Snap range size</input>
+  <input id="snapRangeControl" type = "range" ng-model="snapRange" min="15" max="100" value ="15">Snap range size</input>
 </div>
 
 <div>
