@@ -54,8 +54,8 @@ export const drawLine = (x1, y1, x2, y2, style) => {
   context.restore();
 };
 
-export const highlightPoint = (x, y) => {
-  drawCircle(x, y, 5, { width: 1, color: '#FF0000' });
+export const highlightPoint = (x, y, color) => {
+  drawCircle(x, y, 5, { width: 1, color });
 };
 
 export const clearPointHighlight = (x, y) => {
@@ -74,8 +74,8 @@ export const drawRandomCircle = () => {
   return circle;
 };
 
-export const drawHighlight = (point) => {
-  highlightPoint(point.x, point.y);
+export const drawHighlight = (point, color) => {
+  highlightPoint(point.x, point.y, color);
 };
 
 export const clearHighlight = (point) => {

@@ -54,9 +54,9 @@ angular.module(MODULE_NAME, [])
     $scope.mainRender = function () {
     };
 
-    $scope.highlightOrClear = (geomPoint, mousePoint, line) => {
+    $scope.highlightOrClear = (geomPoint, mousePoint, line, color) => {
       if (distance(geomPoint.x, geomPoint.y, mousePoint.x, mousePoint.y) < $scope.snapRange) {
-        drawHighlight(geomPoint);
+        drawHighlight(geomPoint, color);
         return true;
       }
       clearHighlight(geomPoint);
@@ -65,9 +65,9 @@ angular.module(MODULE_NAME, [])
       return false;
     };
 
-    $scope.highlightOrClearC = (geomPoint, mousePoint, circle) => {
+    $scope.highlightOrClearC = (geomPoint, mousePoint, circle, color) => {
       if (distance(geomPoint.x, geomPoint.y, mousePoint.x, mousePoint.y) < $scope.snapRange) {
-        drawHighlight(geomPoint);
+        drawHighlight(geomPoint, color);
         return true;
       }
 
@@ -81,7 +81,7 @@ angular.module(MODULE_NAME, [])
       const lines = Object.values($scope.lineStore);
       for (let ii = 0; ii !== lines.length; ii++) {
         const midp = midpoint(lines[ii].x1, lines[ii].y1, lines[ii].x2, lines[ii].y2);
-        $scope.highlightOrClear(midp, mousePoint, lines[ii]);
+        $scope.highlightOrClear(midp, mousePoint, lines[ii], '#FF0000');
       }
     };
 
@@ -97,8 +97,8 @@ angular.module(MODULE_NAME, [])
           x: lines[ii].x2,
           y: lines[ii].y2,
         };
-        $scope.highlightOrClear(ep1, mousePoint, lines[ii]);
-        $scope.highlightOrClear(ep2, mousePoint, lines[ii]);
+        $scope.highlightOrClear(ep1, mousePoint, lines[ii], '#00FF00');
+        $scope.highlightOrClear(ep2, mousePoint, lines[ii], '#00FF00');
       }
     };
 
@@ -109,7 +109,7 @@ angular.module(MODULE_NAME, [])
           x: circles[ii].x,
           y: circles[ii].y,
         };
-        $scope.highlightOrClearC(cp1, mousePoint, circles[ii]);
+        $scope.highlightOrClearC(cp1, mousePoint, circles[ii], '#0000FF');
       }
     };
 
@@ -136,15 +136,15 @@ angular.module(MODULE_NAME, [])
 
         let finished = false;
 
-        finished = $scope.highlightOrClearC(q1, mousePoint, circles[ii]);
+        finished = $scope.highlightOrClearC(q1, mousePoint, circles[ii], '#FF00FF');
         if (!finished) {
-          finished = $scope.highlightOrClearC(q2, mousePoint, circles[ii]);
+          finished = $scope.highlightOrClearC(q2, mousePoint, circles[ii], '#FF00FF');
         }
         if (!finished) {
-          finished = $scope.highlightOrClearC(q3, mousePoint, circles[ii]);
+          finished = $scope.highlightOrClearC(q3, mousePoint, circles[ii], '#FF00FF');
         }
         if (!finished) {
-          finished = $scope.highlightOrClearC(q4, mousePoint, circles[ii]);
+          finished = $scope.highlightOrClearC(q4, mousePoint, circles[ii], '#FF00FF');
         }
       }
     };
