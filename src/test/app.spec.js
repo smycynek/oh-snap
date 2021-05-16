@@ -1,7 +1,8 @@
-describe('object snap', () => {
-  it('should set the snap range', () => {
+// spec.js
+describe('Startup and title test', () => {
+  it('should have a title', () => {
     browser.get('http://localhost:8080/snap');
-    const x = 2;
-    expect(x).toEqual(2);
+
+    expect(browser.getTitle()).toEqual('Oh, snap!');
   });
 });
