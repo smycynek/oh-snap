@@ -1,10 +1,10 @@
+/* eslint-disable no-undef */
+
 import app from './app';
 
 describe('app', () => {
-
   describe('AppCtrl', () => {
     let ctrl;
-
     beforeEach(() => {
       angular.mock.module(app);
 

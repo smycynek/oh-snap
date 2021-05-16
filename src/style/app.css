@@ -12,6 +12,12 @@ h1,h2,body,p {
 }
 
 
+h2{
+  color: grey;
+}
+
+
+
 main {
   margin: 0.0em;
   padding:  0.0em;
@@ -23,5 +29,5 @@ canvas {
   padding: 10px;
   border-width: 2px;
   border-style: solid;
-  border-color: black;
+  border-color: grey;
 }

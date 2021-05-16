@@ -42,7 +42,7 @@ angular.module(MODULE_NAME, [])
       }
     };
 
-    $scope.snapRange = 15;
+    $scope.snapRange = 20;
     $scope.endpointSnap = true;
     $scope.midpointSnap = false;
     $scope.centerpointSnap = true;
