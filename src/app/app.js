@@ -68,6 +68,7 @@ angular.module(MODULE_NAME, [])
       clearHighlight(geomPoint);
       redrawFunc(redrawData, { color: WHITE, width: 2 });
       redrawFunc(redrawData);
+      return null;
     };
 
     $scope.nearAnyMidPoint = (mousePoint) => {
