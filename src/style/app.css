@@ -1,16 +1,29 @@
 /* styles in src/style directory are applied to the whole page */
 
+.topLabel {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
 input,button {
-  margin-left: 10px;
   padding-left: 10px;
   margin-bottom: 3px;
+}
+
+input {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+label {
+  margin-right: 0px;
+  -left:20px;
 }
 
 h1,h2,body,p {
   margin-left: 5px;
   padding-left: 5px;
 }
-
 
 h2{
   color: grey;
@@ -30,4 +43,27 @@ canvas {
   border-width: 2px;
   border-style: solid;
   border-color: grey;
+}
+
+
+.simpleGrid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 550px 550px;
+  background-color: #fff;
+  color: #444;
+}
+
+.item {
+
+}
+
+.left {
+  grid-column: 1;
+  grid-row: 1;
+}
+.right {
+  margin-top:0px;
+  grid-column: 2;
+  grid-row: 1;
 }

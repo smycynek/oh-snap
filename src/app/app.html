@@ -11,34 +11,53 @@
 
 <div>
   <button id="addLine" class='btn btn-primary' type="button" ng-click=drawRandomLine()>Random Line</button>
-</div>
 
-<div>
+
+
   <button id="addCircle" class='btn btn-primary' type="button" ng-click=drawRandomCircle()>Random Circle</button>
+
+
+
+  <button id="addTest" class='btn btn-primary' type="button" ng-click=drawTestPattern()>Test pattern</button>
+</div>
+
+<p class="topLabel">Snap to:</p>
+<div>
+  <label>Midpoint
+  <input type="checkbox" ng-model="midpointSnap"></input>
+  </label>
+  <label>
+    Endpoint
+  <input type="checkbox" ng-model="endpointSnap"></input>
+</label>
+<label>
+  Centerpoint
+  <input type="checkbox" ng-model="centerpointSnap"></input>
+</label>
+<label>
+  Quadrant
+  <input type="checkbox" ng-model="quadrantSnap"></input>
+</label>
 </div>
 
 <div>
-  <input type = "checkbox" ng-model="midpointSnap">Snap to midpoint </input>
+  <p class="topLabel">Snap range size:</p>
+  <input id="snapRangeControl" type = "range" ng-model="snapRange" min="15" max="100" value ="15"></input>
 </div>
 
-<div>
-  <input type = "checkbox" ng-model="endpointSnap">Snap to endpoint</input>
+<div class = 'simpleGrid'>
+  <canvas class='item left' ng-mousemove="showCoords($event)" width="500" height="500" id="line_area"></canvas>
+<div class = 'item right'>
+<p class = 'topLabel'>Line data</p>
+<textarea readonly cols="60" rows="6" id=lineData>
+  {{lineStore}}
+</textarea>
+<p class = 'topLabel'>Circle data</p>
+<textarea readonly cols="60" rows="6" id=circleData>
+  {{circleStore}}
+</textarea>
 </div>
 
-<div>
-  <input type = "checkbox" ng-model="centerpointSnap">Snap to centerpoint</input>
-</div>
-
-<div>
-  <input type = "checkbox" ng-model="quadrantSnap">Snap to quadrant</input>
-</div>
-
-<div>
-  <input id="snapRangeControl" type = "range" ng-model="snapRange" min="15" max="100" value ="15">Snap range size</input>
-</div>
-
-<div>
-  <canvas ng-mousemove="showCoords($event)" width="500" height="500" id="line_area"></canvas>
 </div>
 
 </div>

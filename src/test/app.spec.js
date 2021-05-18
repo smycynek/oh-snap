@@ -7,29 +7,26 @@ describe('Startup and title test', () => {
   });
 });
 
-describe('Startup and add circles', () => {
-  it('should be able to add circles', () => {
+describe('Startup and add test pattern', () => {
+  it('should be able to a test pattern', () => {
     browser.get('http://localhost:8080/snap');
 
-    const addButton = element(by.id('addCircle'));
+    const addButton = element(by.id('addTest'));
     addButton.click();
-    addButton.click();
-    addButton.click();
-    addButton.click();
-    addButton.click();
-  });
-});
+    const lineArea = element(by.id('lineData'));
 
-describe('Startup and add lines range', () => {
-  it('should be able to add lines', () => {
-    browser.get('http://localhost:8080/snap');
+    lineArea.getAttribute('value').then((value) => {
+      const data = JSON.parse(value);
+      expect(Object.keys(data).length).toBe(3);
+    });
 
-    const addButton = element(by.id('addLine'));
-    addButton.click();
-    addButton.click();
-    addButton.click();
-    addButton.click();
-    addButton.click();
+    const circleArea = element(by.id('circleData'));
+    circleArea.getAttribute('value').then((value) => {
+      const data = JSON.parse(value);
+      const keys = Object.keys(data);
+      expect(keys.length).toBe(1); // ensure one item
+      expect(data[keys[0]].r).toBe(50);  //ensure radius is correct
+    });
   });
 });
 
