@@ -32,11 +32,13 @@ angular.module(MODULE_NAME, [])
   .controller('RenderCtrl', ($scope) => {
     $scope.showCoords = function (e) {
       const resultPoint = getMousePos(e);
-      if ($scope.midpointSnap) {
-        $scope.nearAnyMidPoint(resultPoint);
-      }
+
       if ($scope.endpointSnap) {
         $scope.nearAnyEndPoint(resultPoint);
+      }
+
+      if ($scope.midpointSnap) {
+        $scope.nearAnyMidPoint(resultPoint);
       }
 
       if ($scope.centerpointSnap) {
@@ -57,17 +59,29 @@ angular.module(MODULE_NAME, [])
     $scope.lineStore = {};
     $scope.circleStore = {};
 
+    $scope.selectionList = {};
+
     $scope.mainRender = function () {
     };
 
-    $scope.highlightOrClear = (geomPoint, mousePoint, redrawData, redrawFunc, color) => {
+    $scope.addSelection = function (objectId, label, point) {
+      $scope.selectionList[`${objectId}_${label}`] = point;
+    };
+
+    $scope.removeSelection = function (objectId, label) {
+      delete $scope.selectionList[`${objectId}_${label}`];
+    };
+
+    $scope.highlightOrClear = (geomPoint, mousePoint, redrawData, redrawFunc, label, color) => {
       if (distance(geomPoint, mousePoint) < $scope.snapRange) {
         drawHighlight(geomPoint, color);
+        $scope.addSelection(redrawData.id, label, geomPoint);
         return redrawData.id;
       }
       clearHighlight(geomPoint);
       redrawFunc(redrawData, { color: WHITE, width: 2 });
       redrawFunc(redrawData);
+      $scope.removeSelection(redrawData.id, label);
       return null;
     };
 
@@ -75,7 +89,7 @@ angular.module(MODULE_NAME, [])
       const lines = Object.values($scope.lineStore);
       for (let ii = 0; ii !== lines.length; ii++) {
         const lineMidpoint = midpoint(lines[ii]);
-        $scope.highlightOrClear(lineMidpoint, mousePoint, lines[ii], drawLine, RED);
+        $scope.highlightOrClear(lineMidpoint, mousePoint, lines[ii], drawLine, "MP", RED);
       }
     };
 
@@ -90,9 +104,9 @@ angular.module(MODULE_NAME, [])
           x: lines[ii].x2,
           y: lines[ii].y2,
         };
-        const finished = $scope.highlightOrClear(endpoint1, mousePoint, lines[ii], drawLine, '#00FF00');
+        const finished = $scope.highlightOrClear(endpoint1, mousePoint, lines[ii], drawLine, "EP1", GREEN);
         if (!finished) {
-          $scope.highlightOrClear(endpoint2, mousePoint, lines[ii], drawLine, GREEN);
+          $scope.highlightOrClear(endpoint2, mousePoint, lines[ii], drawLine, "EP2", GREEN);
         }
       }
     };
@@ -104,7 +118,7 @@ angular.module(MODULE_NAME, [])
           x: circles[ii].x,
           y: circles[ii].y,
         };
-        $scope.highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, BLUE);
+        $scope.highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, "CP", BLUE);
       }
     };
 
@@ -131,15 +145,15 @@ angular.module(MODULE_NAME, [])
 
         let finished = null;
 
-        finished = $scope.highlightOrClear(q1, mousePoint, circles[ii], drawCircle, PURPLE);
+        finished = $scope.highlightOrClear(q1, mousePoint, circles[ii], drawCircle, "Q1", PURPLE);
         if (!finished) {
-          finished = $scope.highlightOrClear(q2, mousePoint, circles[ii], drawCircle, PURPLE);
+          finished = $scope.highlightOrClear(q2, mousePoint, circles[ii], drawCircle, "Q2", PURPLE);
         }
         if (!finished) {
-          finished = $scope.highlightOrClear(q3, mousePoint, circles[ii], drawCircle, PURPLE);
+          finished = $scope.highlightOrClear(q3, mousePoint, circles[ii], drawCircle, "Q3", PURPLE);
         }
         if (!finished) {
-          finished = $scope.highlightOrClear(q4, mousePoint, circles[ii], drawCircle, PURPLE);
+          finished = $scope.highlightOrClear(q4, mousePoint, circles[ii], drawCircle, "Q4", PURPLE);
         }
       }
     };

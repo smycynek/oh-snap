@@ -18,7 +18,7 @@ the snap point highlight is erased.
 
 ## Future features
 
-1. Consider storing currently selected snap point(s) or objects
+1. Use the currently selected item list
 to allow for more efficient erasing of highlights when the mouse moves out of range (and also allow for app to list/analyze current selections)
 
 1. Support drawing new lines and rubber-banding endpoints to snap-points.
