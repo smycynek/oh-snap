@@ -14,6 +14,7 @@
     "rules": {
     },
     "plugins": [
-        "jasmine"
+        "jasmine",
+        "protractor"
     ]
 }

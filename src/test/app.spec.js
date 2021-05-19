@@ -1,14 +1,13 @@
-// spec.js
+// protractor tests
 describe('Startup and title test', () => {
   it('should have a title', () => {
     browser.get('http://localhost:8080/snap');
-
     expect(browser.getTitle()).toEqual('Oh, snap!');
   });
 });
 
 describe('Startup and add test pattern', () => {
-  it('should be able to a test pattern', () => {
+  it('should be able to add test pattern and find data', () => {
     browser.get('http://localhost:8080/snap');
 
     const addButton = element(by.id('addTest'));
@@ -17,21 +16,20 @@ describe('Startup and add test pattern', () => {
 
     lineArea.getAttribute('value').then((value) => {
       const data = JSON.parse(value);
-      expect(Object.keys(data).length).toBe(3);
+      expect(data.length).toBe(3);
     });
 
     const circleArea = element(by.id('circleData'));
     circleArea.getAttribute('value').then((value) => {
       const data = JSON.parse(value);
-      const keys = Object.keys(data);
-      expect(keys.length).toBe(1); // Ensure one item.
-      expect(data[keys[0]].r).toBe(50); // Ensure radius is correct.
+      expect(data.length).toBe(1); // Ensure one item.
+      expect(data[0].r).toBe(50); // Ensure radius is correct.
     });
   });
 });
 
-describe('Startup and recognize a centerpoint', () => {
-  it('should be able to a find a centerpoint', () => {
+describe('Startup and recognize a centerpoint snap', () => {
+  it('should be able to a find a centerpoint snap', () => {
     browser.get('http://localhost:8080/snap');
 
     const rangeControl = element(by.id('snapRangeControl'));
@@ -42,7 +40,7 @@ describe('Startup and recognize a centerpoint', () => {
 
     const addButton = element(by.id('addTest'));
     addButton.click();
-    const canvas = element(by.id('line_area'));
+    const canvas = element(by.id('drawingArea'));
     browser.actions()
       .mouseMove(canvas) // Move mouse to center of canvas.
       .perform();
@@ -58,8 +56,8 @@ describe('Startup and recognize a centerpoint', () => {
   });
 });
 
-describe('Startup and set scope range', () => {
-  it('should be able to set scope range', () => {
+describe('Startup and set snap range', () => {
+  it('should be able to set snap range', () => {
     browser.get('http://localhost:8080/snap');
     const rangeControl = element(by.id('snapRangeControl'));
     expect(rangeControl.getAttribute('value')).toEqual('20');

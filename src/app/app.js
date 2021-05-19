@@ -56,8 +56,8 @@ angular.module(MODULE_NAME, [])
     $scope.centerpointSnap = true;
     $scope.quadrantSnap = false;
 
-    $scope.lineStore = {};
-    $scope.circleStore = {};
+    $scope.lineStore = [];
+    $scope.circleStore = [];
 
     $scope.selectionList = {};
 
@@ -86,15 +86,15 @@ angular.module(MODULE_NAME, [])
     };
 
     $scope.nearAnyMidPoint = (mousePoint) => {
-      const lines = Object.values($scope.lineStore);
+      const lines = $scope.lineStore;
       for (let ii = 0; ii !== lines.length; ii++) {
         const lineMidpoint = midpoint(lines[ii]);
-        $scope.highlightOrClear(lineMidpoint, mousePoint, lines[ii], drawLine, "MP", RED);
+        $scope.highlightOrClear(lineMidpoint, mousePoint, lines[ii], drawLine, 'MP', RED);
       }
     };
 
     $scope.nearAnyEndPoint = (mousePoint) => {
-      const lines = Object.values($scope.lineStore);
+      const lines = $scope.lineStore;
       for (let ii = 0; ii !== lines.length; ii++) {
         const endpoint1 = {
           x: lines[ii].x1,
@@ -104,26 +104,26 @@ angular.module(MODULE_NAME, [])
           x: lines[ii].x2,
           y: lines[ii].y2,
         };
-        const finished = $scope.highlightOrClear(endpoint1, mousePoint, lines[ii], drawLine, "EP1", GREEN);
+        const finished = $scope.highlightOrClear(endpoint1, mousePoint, lines[ii], drawLine, 'EP1', GREEN);
         if (!finished) {
-          $scope.highlightOrClear(endpoint2, mousePoint, lines[ii], drawLine, "EP2", GREEN);
+          $scope.highlightOrClear(endpoint2, mousePoint, lines[ii], drawLine, 'EP2', GREEN);
         }
       }
     };
 
     $scope.nearAnyCenterPoint = (mousePoint) => {
-      const circles = Object.values($scope.circleStore);
+      const circles = $scope.circleStore;
       for (let ii = 0; ii !== circles.length; ii++) {
         const cp1 = {
           x: circles[ii].x,
           y: circles[ii].y,
         };
-        $scope.highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, "CP", BLUE);
+        $scope.highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, 'CP', BLUE);
       }
     };
 
     $scope.nearAnyQuadrantPoint = (mousePoint) => {
-      const circles = Object.values($scope.circleStore);
+      const circles = $scope.circleStore;
       for (let ii = 0; ii !== circles.length; ii++) {
         const q1 = {
           x: circles[ii].x + circles[ii].r,
@@ -145,15 +145,15 @@ angular.module(MODULE_NAME, [])
 
         let finished = null;
 
-        finished = $scope.highlightOrClear(q1, mousePoint, circles[ii], drawCircle, "Q1", PURPLE);
+        finished = $scope.highlightOrClear(q1, mousePoint, circles[ii], drawCircle, 'Q1', PURPLE);
         if (!finished) {
-          finished = $scope.highlightOrClear(q2, mousePoint, circles[ii], drawCircle, "Q2", PURPLE);
+          finished = $scope.highlightOrClear(q2, mousePoint, circles[ii], drawCircle, 'Q2', PURPLE);
         }
         if (!finished) {
-          finished = $scope.highlightOrClear(q3, mousePoint, circles[ii], drawCircle, "Q3", PURPLE);
+          finished = $scope.highlightOrClear(q3, mousePoint, circles[ii], drawCircle, 'Q3', PURPLE);
         }
         if (!finished) {
-          finished = $scope.highlightOrClear(q4, mousePoint, circles[ii], drawCircle, "Q4", PURPLE);
+          finished = $scope.highlightOrClear(q4, mousePoint, circles[ii], drawCircle, 'Q4', PURPLE);
         }
       }
     };
@@ -166,7 +166,7 @@ angular.module(MODULE_NAME, [])
         x2: line.x2,
         y2: line.y2,
       };
-      $scope.lineStore[lineData.id] = lineData;
+      $scope.lineStore.push(lineData);
     };
 
     $scope.storeCircle = function (circle) {
@@ -176,7 +176,7 @@ angular.module(MODULE_NAME, [])
         y: circle.y,
         r: circle.r,
       };
-      $scope.circleStore[circleData.id] = circleData;
+      $scope.circleStore.push(circleData);
     };
 
     $scope.drawRandomLine = function () {

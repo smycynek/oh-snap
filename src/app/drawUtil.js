@@ -1,6 +1,6 @@
 import { randomLineData, randomCircleData } from './geomUtil';
 
-const mainCanvas = 'line_area';
+const mainCanvasId = 'drawingArea';
 
 export const getCanvas = (canvasId) => {
   const canvas = document.getElementById(canvasId);
@@ -13,7 +13,7 @@ const getNumberFromPx = (px) => {
 };
 
 export const getMousePos = (moveEvent) => {
-  const canvas = getCanvas(mainCanvas);
+  const canvas = getCanvas(mainCanvasId);
   const rect = canvas.getBoundingClientRect();
 
   const style = canvas.currentStyle || window.getComputedStyle(canvas);
@@ -25,7 +25,7 @@ export const getMousePos = (moveEvent) => {
   };
 };
 
-export const getContext = () => getCanvas(mainCanvas).getContext('2d');
+export const getContext = () => getCanvas(mainCanvasId).getContext('2d');
 
 export const drawCircle = (circle, style) => {
   const context = getContext();
