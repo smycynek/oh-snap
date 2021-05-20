@@ -27,6 +27,8 @@ to allow for more efficient erasing of highlights when the mouse moves out of ra
 
 3. Use standard coordinates (+y = up) rather than canvas coordinates.
 
+4.  Use of a search library to look for snap candidates, such as <https://github.com/mourner/rbush>
+
 Are there libraries that do this already?  Of course -- this is just for fun.
 
 ## Usage
