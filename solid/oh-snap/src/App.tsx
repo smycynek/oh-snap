@@ -2,6 +2,7 @@ import * as bootstrap from "bootstrap";
 import button from "bootstrap/js/dist/button";
 
 import { v4 as uuidv4 } from "uuid";
+import { ReactiveMap } from "@solid-primitives/map";
 
 import {
   createSignal,
@@ -28,7 +29,7 @@ import {
   randomLineData,
 } from "./geomUtil";
 
-import { createMutable } from "solid-js/store";
+import { createMutable, createStore } from "solid-js/store";
 
 const App: Component = () => {
   const showCoords = (e: any) => {
@@ -64,7 +65,7 @@ const App: Component = () => {
   const [quadrantSnap, setQuadrantSnap] = createSignal(false);
   const lineStore = createMutable<Line[]>([]);
   const circleStore = createMutable<Circle[]>([]);
-  const selectionList = createMutable<Map<String, Point>>(new Map());
+  const selectionList = new ReactiveMap<string, Point>();
 
   const addSelection = function (
     objectId: string,
@@ -297,8 +298,9 @@ const App: Component = () => {
           </button>
         </div>
 
-        <p class="topLabel">Snap to:</p>
-        <div>
+      
+        <div style="margin-bottom: 10px; margin-top: 10px;">
+          <span style="margin-right: 10px;">Snap to:</span>
           <label>
             Midpoint
             <input type="checkbox" checked={midpointSnap()} onChange={(e) => setMidpointSnap(e.currentTarget.checked)}></input>
@@ -317,8 +319,8 @@ const App: Component = () => {
           </label>
         </div>
 
-        <div>
-          <p class="topLabel">Snap range size:</p>
+        <div style="margin-bottom: 10px; margin-top: 10px;">
+          <label class="topLabel">Snap range size:</label>
           <input
             id="snapRangeControl"
             type="range"
@@ -341,17 +343,17 @@ const App: Component = () => {
             ></canvas>
           </div>
           <div class="col">
-            <p class="topLabel">Line data</p>
+            <label class="topLabel">Line data</label>
             <textarea readonly cols="60" rows="3" id="lineData">
             {lineStore.map((line) => `L: ${line.id}: \n`)}
             </textarea>
-            <p class="topLabel">Circle data</p>
+            <label class="topLabel">Circle data</label>
             <textarea readonly cols="60" rows="3" id="circleData">
             {circleStore.map((circle) => `C: ${circle.id}: \n`)}
             </textarea>
-            <p class="topLabel">Selection data</p>
-            <textarea readonly cols="40" rows="2" id="selectionData">
-      
+            <label class="topLabel">Selection data</label>
+            <textarea readonly cols="60" rows="2" id="selectionData">
+            {Array.from(selectionList.entries()).map(([key, point]) => `${key}: (${point.x}, ${point.y})\n`)}
             </textarea>
           </div>
           </div>
