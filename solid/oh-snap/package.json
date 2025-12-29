@@ -7,15 +7,20 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint ./src --ext ts,tsx --report-unused-disable-directives"
   },
   "license": "MIT",
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
     "@types/react": "^19.2.7",
+    "eslint": "^9.39.2",
+    "eslint-plugin-solid": "^0.14.5",
+    "jiti": "^2.6.1",
     "sass": "^1.81.0",
     "solid-devtools": "^0.34.3",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.50.1",
     "vite": "^7.1.4",
     "vite-plugin-solid": "^2.11.8"
   },

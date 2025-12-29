@@ -1,17 +1,17 @@
-// eslint-disable-next-line arrow-body-style
+
 
 export class Point {
   constructor (public x: number, public y:number) {}
 }
 
-export class Line {  
-  public id: string = ''
+export class Line {
+  public id: string = '';
   constructor (public x1: number, public y1: number, public x2: number, public y2: number) {}
 
 }
 
 export class Circle {
-    public id: string = ''
+    public id: string = '';
     constructor (public x: number, public y:number, public r: number) {}
 }
 
@@ -45,10 +45,10 @@ export const randomCircleRadius = () => randomIntBounds(CIRCLE_R_MIN, CIRCLE_R_M
 export const randomLineData = (): Line => {
   return new Line(randomLinePosition(), randomLinePosition(),
    randomLinePosition(), randomLinePosition());
-}
+};
 
 export const randomCircleData = (): Circle => {
  return new Circle(randomCirclePosition(),
   randomCirclePosition(),
-  randomCircleRadius())
+  randomCircleRadius());
 };

@@ -1,24 +1,20 @@
-import * as bootstrap from "bootstrap";
-import button from "bootstrap/js/dist/button";
 
-import { v4 as uuidv4 } from "uuid";
-import { ReactiveMap } from "@solid-primitives/map";
+
+import { v4 as uuidv4 } from 'uuid';
+import { ReactiveMap } from '@solid-primitives/map';
 
 import {
   createSignal,
-  For,
-  JSX,
-  onMount,
-  Show,
   type Component,
-} from "solid-js";
+} from 'solid-js';
 import {
   getMousePos,
   drawHighlight,
   clearHighlight,
   drawLine,
   drawCircle,
-} from "./drawUtil";
+  Style,
+} from './drawUtil';
 import {
   Circle,
   distance,
@@ -27,12 +23,12 @@ import {
   Point,
   randomCircleData,
   randomLineData,
-} from "./geomUtil";
+} from './geomUtil';
 
-import { createMutable, createStore } from "solid-js/store";
+import { createMutable } from 'solid-js/store';
 
 const App: Component = () => {
-  const showCoords = (e: any) => {
+  const showCoords = (e: MouseEvent) => {
     const resultPoint = getMousePos(e);
 
     if (endpointSnap()) {
@@ -52,11 +48,11 @@ const App: Component = () => {
     }
   };
 
-  const RED = "#FF0000";
-  const BLUE = "#0000FF";
-  const GREEN = "#00FF00";
-  const PURPLE = "#FF00FF";
-  const WHITE = "#FFFFFF";
+  const RED = '#FF0000';
+  const BLUE = '#0000FF';
+  const GREEN = '#00FF00';
+  const PURPLE = '#FF00FF';
+  const WHITE = '#FFFFFF';
 
   const [snapRange, setSnapRange] = createSignal(20);
   const [endpointSnap, setEndpointSnap] = createSignal(true);
@@ -79,11 +75,12 @@ const App: Component = () => {
     selectionList.delete(`${objectId}_${label}`);
   };
 
+  //(message: string) => void;
   const highlightOrClear = (
     geomPoint: Point,
     mousePoint: Point,
     redrawData: Line | Circle,
-    redrawFunc: any, // TOOD FIX
+    redrawFunc: ((obj: Circle | Line, style: Style | null) => void),
     label: string,
     color: string
   ) => {
@@ -94,7 +91,7 @@ const App: Component = () => {
     }
     clearHighlight(geomPoint);
     redrawFunc(redrawData, { color: WHITE, width: 2 });
-    redrawFunc(redrawData);
+    redrawFunc(redrawData, null);
     removeSelection(redrawData.id, label);
     return null;
   };
@@ -108,7 +105,7 @@ const App: Component = () => {
         mousePoint,
         lines[ii],
         drawLine,
-        "MP",
+        'MP',
         RED
       );
     }
@@ -130,7 +127,7 @@ const App: Component = () => {
         mousePoint,
         lines[ii],
         drawLine,
-        "EP1",
+        'EP1',
         GREEN
       );
       if (!finished) {
@@ -139,7 +136,7 @@ const App: Component = () => {
           mousePoint,
           lines[ii],
           drawLine,
-          "EP2",
+          'EP2',
           GREEN
         );
       }
@@ -153,7 +150,7 @@ const App: Component = () => {
         x: circles[ii].x,
         y: circles[ii].y,
       };
-      highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, "CP", BLUE);
+      highlightOrClear(cp1, mousePoint, circles[ii], drawCircle, 'CP', BLUE);
     }
   };
 
@@ -185,7 +182,7 @@ const App: Component = () => {
         mousePoint,
         circles[ii],
         drawCircle,
-        "Q1",
+        'Q1',
         PURPLE
       );
       if (!finished) {
@@ -194,7 +191,7 @@ const App: Component = () => {
           mousePoint,
           circles[ii],
           drawCircle,
-          "Q2",
+          'Q2',
           PURPLE
         );
       }
@@ -204,7 +201,7 @@ const App: Component = () => {
           mousePoint,
           circles[ii],
           drawCircle,
-          "Q3",
+          'Q3',
           PURPLE
         );
       }
@@ -214,7 +211,7 @@ const App: Component = () => {
           mousePoint,
           circles[ii],
           drawCircle,
-          "Q4",
+          'Q4',
           PURPLE
         );
       }
@@ -298,7 +295,7 @@ const App: Component = () => {
           </button>
         </div>
 
-      
+
         <div style="margin-bottom: 10px; margin-top: 10px;">
           <span style="margin-right: 10px;">Snap to:</span>
           <label>
