@@ -333,6 +333,7 @@ const App: Component = () => {
           </div>
         </div>
       </div>
+      <a href="https://github.com/smycynek/oh-snap">https://github.com/smycynek/oh-snap</a>
     </div>
   );
 };

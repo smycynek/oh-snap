@@ -1,36 +1,39 @@
+# Oh snap! - A simple object snap demo
+
+Copyright Steven Mycynek 2021-2026
+
+## Basics
+
+I always wanted to implement an object snap, and there's no time like the present. I originally did this in 2021 in AngularJS and recently redid it in SolidJS and now support mobile.
+
+This obviously isn't close to a fully functional drawing system, but essentially:
+
+1. Random lines and circles are drawn,
+   and their parameters are added to a small lookup dictionary.
+
+2. When the mouse/touch input moves, depending on snap options, the app iterates through all
+   endpoints, midpoints, etc. and checks if their distance is less than or equal to
+   the current snap range radius. If it is, that snap point is highlighted.
+
+## Future features
+
+1. Use the currently selected item list
+   to allow for more efficient erasing of highlights when the mouse moves out of range (and also allow for app to list/analyze current selections)
+
+1. Support drawing new lines and rubber-banding endpoints to snap-points.
+
+1. Support for snap to perpendicular, parallel, and tangent.
+
+1. Use standard coordinates (+y = up) rather than canvas coordinates.
+
+1. Use of a search library to look for snap candidates, such as <https://github.com/mourner/rbush>
+
+Are there libraries that do this already? Of course -- this is just for fun.
+
 ## Usage
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+`bun run start`
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Live demo
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
-
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run dev` or `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
-
-## This project was created with the [Solid CLI](https://github.com/solidjs-community/solid-cli)
+<https://stevenvictor.net/snap>
