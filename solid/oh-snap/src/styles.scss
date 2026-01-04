@@ -5,14 +5,14 @@
 
 h1 {
   font-weight: bolder;
-  font-size: larger;
+  font-size: x-large;
   user-select: none;
   margin-bottom: 2px;
 }
 
 h2 {
   font-weight: bolder;
-  font-size:  medium;
+  font-size: medium;
   user-select: none;
   margin-bottom: 0px;
 }
@@ -29,16 +29,23 @@ span {
 label {
   font-size: small;
   user-select: none;
+  font-weight: bold;
+}
+
+.snapHeader {
+  font-size: medium;
 }
 
 .snapLabel {
   line-height: 0.25em;
-  width: 110px;
-  display: inline-block;
+  width: 90px;
+}
+
+.container {
+  margin-left: 0 !important;
 }
 
 button {
-
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0.5em;
@@ -47,12 +54,16 @@ button {
 }
 
 summary {
+  font-weight: bold;
   font-size: small;
   user-select: none;
 }
 
 textarea {
   font-size: xx-small;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
 }
 
 .content {
@@ -63,8 +74,6 @@ input[type='checkbox'] {
   margin-right: 1.5em;
   margin-left: 0em;
   margin-top: -5px;
-  display: flex;
-  float: right;
 }
 
 canvas {

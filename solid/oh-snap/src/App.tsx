@@ -3,7 +3,7 @@ import { ReactiveMap } from '@solid-primitives/map';
 
 import { createSignal, type Component } from 'solid-js';
 import {
-  getMousePos,
+  getCurrentPosition,
   drawHighlight,
   drawLine,
   drawCircle,
@@ -22,11 +22,27 @@ import {
 
 import { createMutable } from 'solid-js/store';
 
+const RED = '#FF0000';
+const BLUE = '#0000FF';
+const GREEN = '#00FF00';
+const PURPLE = '#FF00FF';
+export const TRANSPARENT_GREY = '#0000001f';
+
 const App: Component = () => {
+  const [snapRange, setSnapRange] = createSignal(20);
+  const [endpointSnap, setEndpointSnap] = createSignal(true);
+  const [midpointSnap, setMidpointSnap] = createSignal(true);
+  const [centerpointSnap, setCenterpointSnap] = createSignal(true);
+  const [quadrantSnap, setQuadrantSnap] = createSignal(true);
+  const lineStore = createMutable<Line[]>([]);
+  const circleStore = createMutable<Circle[]>([]);
+  const selectionList = new ReactiveMap<string, Point>();
+
   const leaveHandler = () => {
     selectionList.clear();
     clearAll();
   };
+
   const clearAll = () => {
     console.log('clearall');
     clearCanvas();
@@ -35,7 +51,7 @@ const App: Component = () => {
 
   const showCoords = (e: MouseEvent | TouchEvent) => {
     clearAll();
-    const resultPoint = getMousePos(e);
+    const resultPoint = getCurrentPosition(e);
 
     if (endpointSnap()) {
       nearAnyEndPoint(resultPoint);
@@ -55,20 +71,6 @@ const App: Component = () => {
     drawSnapArea(new Circle(resultPoint.x, resultPoint.y, snapRange()));
   };
 
-  const RED = '#FF0000';
-  const BLUE = '#0000FF';
-  const GREEN = '#00FF00';
-  const PURPLE = '#FF00FF';
-
-  const [snapRange, setSnapRange] = createSignal(20);
-  const [endpointSnap, setEndpointSnap] = createSignal(true);
-  const [midpointSnap, setMidpointSnap] = createSignal(true);
-  const [centerpointSnap, setCenterpointSnap] = createSignal(true);
-  const [quadrantSnap, setQuadrantSnap] = createSignal(true);
-  const lineStore = createMutable<Line[]>([]);
-  const circleStore = createMutable<Circle[]>([]);
-  const selectionList = new ReactiveMap<string, Point>();
-
   const addSelection = function (objectId: string, label: string, point: Point) {
     selectionList.set(`${objectId}_${label}`, point);
   };
@@ -83,12 +85,12 @@ const App: Component = () => {
 
   const selectAndHighlightIfNear = (
     geomPoint: Point,
-    mousePoint: Point,
+    selectionPoint: Point,
     redrawData: Line | Circle,
     label: string,
     color: string
   ) => {
-    if (distance(geomPoint, mousePoint) < snapRange()) {
+    if (distance(geomPoint, selectionPoint) < snapRange()) {
       drawHighlight(geomPoint, color);
       addSelection(redrawData.id, label, geomPoint);
       return redrawData.id;
@@ -97,15 +99,15 @@ const App: Component = () => {
     return redrawData.id;
   };
 
-  const nearAnyMidPoint = (mousePoint: Point) => {
+  const nearAnyMidPoint = (selectionPoint: Point) => {
     const lines = lineStore;
     for (let ii = 0; ii !== lines.length; ii++) {
       const lineMidpoint = midpoint(lines[ii]);
-      selectAndHighlightIfNear(lineMidpoint, mousePoint, lines[ii], 'MP', RED);
+      selectAndHighlightIfNear(lineMidpoint, selectionPoint, lines[ii], 'MP', RED);
     }
   };
 
-  const nearAnyEndPoint = (mousePoint: Point) => {
+  const nearAnyEndPoint = (selectionPoint: Point) => {
     const lines = lineStore;
     for (let ii = 0; ii !== lines.length; ii++) {
       const endpoint1 = {
@@ -116,23 +118,23 @@ const App: Component = () => {
         x: lines[ii].x2,
         y: lines[ii].y2,
       };
-      selectAndHighlightIfNear(endpoint1, mousePoint, lines[ii], 'EP1', GREEN);
-      selectAndHighlightIfNear(endpoint2, mousePoint, lines[ii], 'EP2', GREEN);
+      selectAndHighlightIfNear(endpoint1, selectionPoint, lines[ii], 'EP1', GREEN);
+      selectAndHighlightIfNear(endpoint2, selectionPoint, lines[ii], 'EP2', GREEN);
     }
   };
 
-  const nearAnyCenterPoint = (mousePoint: Point) => {
+  const nearAnyCenterPoint = (selectionPoint: Point) => {
     const circles = circleStore;
     for (let ii = 0; ii !== circles.length; ii++) {
       const cp1 = {
         x: circles[ii].x,
         y: circles[ii].y,
       };
-      selectAndHighlightIfNear(cp1, mousePoint, circles[ii], 'CP', BLUE);
+      selectAndHighlightIfNear(cp1, selectionPoint, circles[ii], 'CP', BLUE);
     }
   };
 
-  const nearAnyQuadrantPoint = (mousePoint: Point) => {
+  const nearAnyQuadrantPoint = (selectionPoint: Point) => {
     const circles = circleStore;
     for (let ii = 0; ii !== circles.length; ii++) {
       const q1 = {
@@ -153,10 +155,10 @@ const App: Component = () => {
         y: circles[ii].y - circles[ii].r,
       };
 
-      selectAndHighlightIfNear(q1, mousePoint, circles[ii], 'Q1', PURPLE);
-      selectAndHighlightIfNear(q2, mousePoint, circles[ii], 'Q2', PURPLE);
-      selectAndHighlightIfNear(q3, mousePoint, circles[ii], 'Q3', PURPLE);
-      selectAndHighlightIfNear(q4, mousePoint, circles[ii], 'Q4', PURPLE);
+      selectAndHighlightIfNear(q1, selectionPoint, circles[ii], 'Q1', PURPLE);
+      selectAndHighlightIfNear(q2, selectionPoint, circles[ii], 'Q2', PURPLE);
+      selectAndHighlightIfNear(q3, selectionPoint, circles[ii], 'Q3', PURPLE);
+      selectAndHighlightIfNear(q4, selectionPoint, circles[ii], 'Q4', PURPLE);
     }
   };
 
@@ -206,9 +208,7 @@ const App: Component = () => {
     <div class="content">
       <h1>Oh, snap!</h1>
       <h2>A simple object snap demo</h2>
-      <span class="instructions">
-       Add lines and circles. Drag or touch to see snap points.
-      </span>
+      <span class="instructions">Add lines and circles. Drag or touch to see snap points.</span>
       <div>
         <div>
           <button
@@ -229,7 +229,7 @@ const App: Component = () => {
           </button>
           <button
             id="clearButton"
-            class="btn btn-secondary"
+            class="btn btn-primary"
             type="button"
             onClick={[clearAllGeo, null]}
           >
@@ -237,50 +237,47 @@ const App: Component = () => {
           </button>
         </div>
         <div style="margin-bottom: 0px; margin-top: 0px;">
-          <span style="font-weight: bold; margin-right: 10px;">Snap to</span>
+          <label class="snapHeader" style="margin-right: 10px; margin-bottom: 0px;">
+            Snap to
+          </label>
           <div style="margin-bottom: 1px; margin-top: 1px; padding-bottom: 1px; padding-top: 1px;">
-            <label class="snapLabel">
-              Midpoint
-              <input
-                type="checkbox"
-                checked={midpointSnap()}
-                onChange={(e) => setMidpointSnap(e.currentTarget.checked)}
-              ></input>
-            </label>
-            <label class="snapLabel">
-              Endpoint
-              <input
-                type="checkbox"
-                checked={endpointSnap()}
-                onChange={(e) => setEndpointSnap(e.currentTarget.checked)}
-              ></input>
-            </label>
+            <label class="snapLabel">Midpoint</label>
+            <input
+              type="checkbox"
+              checked={midpointSnap()}
+              onChange={(e) => setMidpointSnap(e.currentTarget.checked)}
+            ></input>
+
+            <label class="snapLabel">Endpoint</label>
+            <input
+              type="checkbox"
+              checked={endpointSnap()}
+              onChange={(e) => setEndpointSnap(e.currentTarget.checked)}
+            ></input>
           </div>
 
-          <div style="margin-bottom: 1px; margin-top: 1px; padding-bottom: 1px; padding-top: 1px;s">
-            <label class="snapLabel">
-              Centerpoint
-              <input
-                type="checkbox"
-                checked={centerpointSnap()}
-                onChange={(e) => setCenterpointSnap(e.currentTarget.checked)}
-              ></input>
-            </label>
+          <div style="margin-bottom: 1px; margin-top: 1px; padding-bottom: 1px; padding-top: 1px;">
+            <label class="snapLabel">Centerpoint</label>
+            <input
+              type="checkbox"
+              checked={centerpointSnap()}
+              onChange={(e) => setCenterpointSnap(e.currentTarget.checked)}
+            ></input>
 
-            <label class="snapLabel">
-              Quadrant
-              <input
-                type="checkbox"
-                checked={quadrantSnap()}
-                onChange={(e) => setQuadrantSnap(e.currentTarget.checked)}
-              ></input>
-            </label>
+            <label class="snapLabel">Quadrant</label>
+            <input
+              type="checkbox"
+              checked={quadrantSnap()}
+              onChange={(e) => setQuadrantSnap(e.currentTarget.checked)}
+            ></input>
           </div>
         </div>
       </div>
 
       <div style="margin-bottom: 5px; margin-top: 5px;">
-        <label style="font-weight: bold; margin-right: 1em;">Snap radius {snapRange()} px</label>
+        <label class="snapHeader" style="margin-right: 1em;">
+          Snap radius {snapRange()} px
+        </label>
         <input
           id="snapRangeControl"
           type="range"
@@ -308,7 +305,7 @@ const App: Component = () => {
           </div>
           <div class="col">
             <details>
-              <summary style="font-weight: bold;">Line data</summary>
+              <summary>Line data</summary>
               <div>
                 <textarea readonly cols="58" rows="3" id="lineData">
                   {lineStore.map((line) => `L: ${line.id}\n`)}
@@ -316,7 +313,7 @@ const App: Component = () => {
               </div>
             </details>
             <details>
-              <summary style="font-weight: bold;">Circle data</summary>
+              <summary>Circle data</summary>
               <div>
                 <textarea readonly cols="58" rows="3" id="circleData">
                   {circleStore.map((circle) => `C: ${circle.id}\n`)}
@@ -325,7 +322,7 @@ const App: Component = () => {
             </details>
             <div>
               <details open>
-                <summary style="font-weight: bold;">Selection Data </summary>
+                <summary>Selection Data </summary>
                 <textarea readonly cols="58" rows="4" id="selectionData">
                   {Array.from(selectionList.entries()).map(
                     ([key, point]) => `${key}: (${point.x}, ${point.y})\n`

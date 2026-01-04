@@ -1,3 +1,4 @@
+import { TRANSPARENT_GREY } from './App';
 import { randomLineData, randomCircleData, Point, Circle, Line } from './geomUtil';
 
 export class Style {
@@ -19,7 +20,7 @@ const getNumberFromPx = (px: string): number => {
   return Number(numeric);
 };
 
-export const getMousePos = (moveEvent: MouseEvent | TouchEvent) => {
+export const getCurrentPosition = (moveEvent: MouseEvent | TouchEvent) => {
   const canvas: HTMLCanvasElement = getCanvas(mainCanvasId) as HTMLCanvasElement;
   const rect = canvas.getBoundingClientRect();
 
@@ -49,11 +50,9 @@ export const clearCanvas = () => {
 
 export const drawSnapArea = (circle: Circle) => {
   const context = getContext();
-  context.closePath();
   context.save();
-  context.closePath();
   context.strokeStyle = '#00000000';
-  context.fillStyle = '#0000001f';
+  context.fillStyle = TRANSPARENT_GREY;
   context.lineWidth = 1;
   context.beginPath();
   context.moveTo(circle.x + circle.r, circle.y);
@@ -61,19 +60,16 @@ export const drawSnapArea = (circle: Circle) => {
   context.stroke();
   context.fill();
   context.closePath();
-  context.fillStyle = '#00000000';
   context.restore();
 };
 export const drawCircle = (circle: Circle, style: Style | null = null) => {
   const context = getContext();
   if (style) {
     context.save();
-    context.fillStyle = '#00000000';
     context.lineWidth = style.width;
     context.strokeStyle = style.color;
   }
   context.lineWidth = 2;
-  context.fillStyle = '#00000000';
   context.beginPath();
   context.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
   context.stroke();
@@ -101,10 +97,6 @@ export const highlightPoint = (x: number, y: number, color: string) => {
   drawCircle(new Circle(x, y, 5), { width: 1, color });
 };
 
-export const clearPointHighlight = (x: number, y: number) => {
-  drawCircle(new Circle(x, y, 5), { width: 1, color: '#FFFFFF' });
-};
-
 export const drawRandomLine = () => {
   const line = randomLineData();
   drawLine(line, null);
@@ -119,8 +111,4 @@ export const drawRandomCircle = () => {
 
 export const drawHighlight = (point: Point, color: string) => {
   highlightPoint(point.x, point.y, color);
-};
-
-export const clearHighlight = (point: Point) => {
-  clearPointHighlight(point.x, point.y);
 };
