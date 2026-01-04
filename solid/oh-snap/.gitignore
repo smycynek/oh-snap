@@ -26,3 +26,9 @@ gitignore
 # System Files
 .DS_Store
 Thumbs.db
+
+snap
+snap2
+snap.zip
+snap2.zip
+sitevars.sh

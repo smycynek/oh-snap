@@ -33,12 +33,12 @@ export const midpoint = (line: Line): Point => ({
   y: (line.y2 + line.y1) / 2,
 });
 
-const LINE_MIN = 50;
+const LINE_MIN = 100;
 const LINE_MAX = 250;
-const CIRCLE_MIN = 100;
-const CIRCLE_MAX = 200;
-const CIRCLE_R_MIN = 50;
-const CIRCLE_R_MAX = 150;
+const CIRCLE_MIN = 50;
+const CIRCLE_MAX = 150;
+const CIRCLE_R_MIN = 20;
+const CIRCLE_R_MAX = 100;
 
 export const randomIntBounds = (min: number, max: number): number => {
   const value = Math.floor(Math.random() * (max - min)) + min;

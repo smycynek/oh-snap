@@ -31,43 +31,41 @@ export const getMousePos = (moveEvent: MouseEvent | TouchEvent) => {
     return {
       x: moveEvent.clientX - (rect.left + offset),
       y: moveEvent.clientY - (rect.top + offset),
-    }; 
-  }
-  else
-    return  {
+    };
+  } else
+    return {
       x: moveEvent.touches[0].clientX - (rect.left + offset),
       y: moveEvent.touches[0].clientY - (rect.top + offset),
     };
-  };
+};
 
 export const getContext = (): CanvasRenderingContext2D =>
   getCanvas(mainCanvasId).getContext('2d') as CanvasRenderingContext2D;
 
 export const clearCanvas = () => {
-    const context = getContext();
-    context.clearRect(0,0,300,300);
+  const context = getContext();
+  context.clearRect(0, 0, 300, 300);
 };
 
 export const drawSnapArea = (circle: Circle) => {
-    const context = getContext();
-    context.closePath();
-    context.save();
-    context.closePath();
-    context.strokeStyle = '#00000000';
-    context.fillStyle = '#0000000a';
-    context.lineWidth = 1;
-    context.beginPath();
-    context.moveTo(circle.x + circle.r, circle.y);
-    context.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
-    context.stroke();
-    context.fill();
-    context.closePath();
-    context.fillStyle = '#00000000';
-    context.restore();
+  const context = getContext();
+  context.closePath();
+  context.save();
+  context.closePath();
+  context.strokeStyle = '#00000000';
+  context.fillStyle = '#0000001f';
+  context.lineWidth = 1;
+  context.beginPath();
+  context.moveTo(circle.x + circle.r, circle.y);
+  context.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+  context.stroke();
+  context.fill();
+  context.closePath();
+  context.fillStyle = '#00000000';
+  context.restore();
 };
 export const drawCircle = (circle: Circle, style: Style | null = null) => {
   const context = getContext();
-
   if (style) {
     context.save();
     context.fillStyle = '#00000000';

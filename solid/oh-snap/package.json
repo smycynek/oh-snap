@@ -6,10 +6,10 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/snap2/",
     "serve": "vite preview",
     "lint": "eslint ./src --ext ts,tsx --report-unused-disable-directives",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "license": "MIT",
   "devDependencies": {
