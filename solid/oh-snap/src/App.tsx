@@ -1,12 +1,7 @@
-
-
 import { v4 as uuidv4 } from 'uuid';
 import { ReactiveMap } from '@solid-primitives/map';
 
-import {
-  createSignal,
-  type Component,
-} from 'solid-js';
+import { createSignal, Show, type Component } from 'solid-js';
 import {
   getMousePos,
   drawHighlight,
@@ -14,6 +9,8 @@ import {
   drawLine,
   drawCircle,
   Style,
+  clearCanvas,
+  drawSnapArea,
 } from './drawUtil';
 import {
   Circle,
@@ -28,9 +25,23 @@ import {
 import { createMutable } from 'solid-js/store';
 
 const App: Component = () => {
-  const showCoords = (e: MouseEvent) => {
-    const resultPoint = getMousePos(e);
 
+  
+  const leaveHandler = () => {
+    selectionList.clear();
+    clearAll();
+  };
+  const clearAll = () => {
+      console.log('clearall');
+      clearCanvas();
+      redrawAll();
+  };
+
+  const showCoords = (e: MouseEvent | TouchEvent) => {
+    clearAll();
+      const resultPoint = getMousePos(e);
+
+  
     if (endpointSnap()) {
       nearAnyEndPoint(resultPoint);
     }
@@ -46,6 +57,7 @@ const App: Component = () => {
     if (quadrantSnap()) {
       nearAnyQuadrantPoint(resultPoint);
     }
+     drawSnapArea(new Circle(resultPoint.x, resultPoint.y, snapRange()));
   };
 
   const RED = '#FF0000';
@@ -56,23 +68,23 @@ const App: Component = () => {
 
   const [snapRange, setSnapRange] = createSignal(20);
   const [endpointSnap, setEndpointSnap] = createSignal(true);
-  const [midpointSnap, setMidpointSnap] = createSignal(false);
+  const [midpointSnap, setMidpointSnap] = createSignal(true);
   const [centerpointSnap, setCenterpointSnap] = createSignal(true);
-  const [quadrantSnap, setQuadrantSnap] = createSignal(false);
+  const [quadrantSnap, setQuadrantSnap] = createSignal(true);
   const lineStore = createMutable<Line[]>([]);
   const circleStore = createMutable<Circle[]>([]);
   const selectionList = new ReactiveMap<string, Point>();
 
-  const addSelection = function (
-    objectId: string,
-    label: string,
-    point: Point
-  ) {
+  const addSelection = function (objectId: string, label: string, point: Point) {
     selectionList.set(`${objectId}_${label}`, point);
   };
 
   const removeSelection = function (objectId: string, label: string) {
     selectionList.delete(`${objectId}_${label}`);
+
+    if (selectionList.size === 0 ) {
+      clearAll();
+    }
   };
 
   //(message: string) => void;
@@ -80,7 +92,7 @@ const App: Component = () => {
     geomPoint: Point,
     mousePoint: Point,
     redrawData: Line | Circle,
-    redrawFunc: ((obj: Circle | Line, style: Style | null) => void),
+    redrawFunc: (obj: Circle | Line, style: Style | null) => void,
     label: string,
     color: string
   ) => {
@@ -89,9 +101,9 @@ const App: Component = () => {
       addSelection(redrawData.id, label, geomPoint);
       return redrawData.id;
     }
-    clearHighlight(geomPoint);
-    redrawFunc(redrawData, { color: WHITE, width: 2 });
-    redrawFunc(redrawData, null);
+ //   clearHighlight(geomPoint);
+  //  redrawFunc(redrawData, { color: WHITE, width: 2 });
+   // redrawFunc(redrawData, null);
     removeSelection(redrawData.id, label);
     return null;
   };
@@ -100,14 +112,7 @@ const App: Component = () => {
     const lines = lineStore;
     for (let ii = 0; ii !== lines.length; ii++) {
       const lineMidpoint = midpoint(lines[ii]);
-      highlightOrClear(
-        lineMidpoint,
-        mousePoint,
-        lines[ii],
-        drawLine,
-        'MP',
-        RED
-      );
+      highlightOrClear(lineMidpoint, mousePoint, lines[ii], drawLine, 'MP', RED);
     }
   };
 
@@ -122,23 +127,9 @@ const App: Component = () => {
         x: lines[ii].x2,
         y: lines[ii].y2,
       };
-      const finished = highlightOrClear(
-        endpoint1,
-        mousePoint,
-        lines[ii],
-        drawLine,
-        'EP1',
-        GREEN
-      );
+      const finished = highlightOrClear(endpoint1, mousePoint, lines[ii], drawLine, 'EP1', GREEN);
       if (!finished) {
-        highlightOrClear(
-          endpoint2,
-          mousePoint,
-          lines[ii],
-          drawLine,
-          'EP2',
-          GREEN
-        );
+        highlightOrClear(endpoint2, mousePoint, lines[ii], drawLine, 'EP2', GREEN);
       }
     }
   };
@@ -177,43 +168,15 @@ const App: Component = () => {
 
       let finished = null;
 
-      finished = highlightOrClear(
-        q1,
-        mousePoint,
-        circles[ii],
-        drawCircle,
-        'Q1',
-        PURPLE
-      );
+      finished = highlightOrClear(q1, mousePoint, circles[ii], drawCircle, 'Q1', PURPLE);
       if (!finished) {
-        finished = highlightOrClear(
-          q2,
-          mousePoint,
-          circles[ii],
-          drawCircle,
-          'Q2',
-          PURPLE
-        );
+        finished = highlightOrClear(q2, mousePoint, circles[ii], drawCircle, 'Q2', PURPLE);
       }
       if (!finished) {
-        finished = highlightOrClear(
-          q3,
-          mousePoint,
-          circles[ii],
-          drawCircle,
-          'Q3',
-          PURPLE
-        );
+        finished = highlightOrClear(q3, mousePoint, circles[ii], drawCircle, 'Q3', PURPLE);
       }
       if (!finished) {
-        finished = highlightOrClear(
-          q4,
-          mousePoint,
-          circles[ii],
-          drawCircle,
-          'Q4',
-          PURPLE
-        );
+        finished = highlightOrClear(q4, mousePoint, circles[ii], drawCircle, 'Q4', PURPLE);
       }
     }
   };
@@ -228,6 +191,11 @@ const App: Component = () => {
     circleStore.push(circle);
   };
 
+  const redrawAll = () => {
+    lineStore.forEach(line => drawLine(line, null));
+    circleStore.forEach(circle => drawCircle(circle, null));
+  };
+
   const drawRandomLine = () => {
     const line = randomLineData();
     drawLine(line, null);
@@ -238,6 +206,21 @@ const App: Component = () => {
     const circle = randomCircleData();
     drawCircle(circle, null);
     storeCircle(circle);
+  };
+
+  const clearAllGeo = () => {
+    const lc = lineStore.length;
+    const cc = circleStore.length;
+
+    for (let idx = 0; idx != lc; idx++) {
+      lineStore.pop();
+    }
+
+     for (let idx = 0; idx != cc; idx++) {
+      circleStore.pop();
+    }
+
+    clearAll();
   };
 
   const drawTestPattern = () => {
@@ -259,15 +242,14 @@ const App: Component = () => {
 
   return (
     <div class="content">
+      <Show when={true}>
       <h1>Oh, snap!</h1>
       <h2>A simple object snap demo</h2>
-      <div>
-        Create a few lines and circles, and mouse over them to see potential
-        snap points. Desktop browser only, currently.
+      <div class="text">
+        Create a few lines and circles, and mouse or touch over them to see potential snap points.
       </div>
-
+</Show>
       <div>
-
         <div>
           <button
             id="addLine"
@@ -275,7 +257,7 @@ const App: Component = () => {
             type="button"
             onClick={[drawRandomLine, null]}
           >
-            Random Line
+            Line
           </button>
           <button
             id="addCircle"
@@ -283,41 +265,75 @@ const App: Component = () => {
             type="button"
             onClick={[drawRandomCircle, null]}
           >
-            Random Circle
+            Circle
           </button>
+                  <Show when={false}>
           <button
             id="addTest"
             class="btn btn-primary"
             type="button"
             onClick={[drawTestPattern, null]}
+          >      Test pattern
+            </button>
+        </Show>
+             <button
+            id="addTest"
+            class="btn btn-primary"
+            type="button"
+            onClick={[clearAllGeo, null]}
           >
-            Test pattern
+            Clear
           </button>
+
         </div>
 
-
         <div style="margin-bottom: 10px; margin-top: 10px;">
-          <span style="margin-right: 10px;">Snap to:</span>
+          <span style="font-weight: bold; margin-right: 10px;">Snap to:</span>
+            <div>
           <label>
             Midpoint
-            <input type="checkbox" checked={midpointSnap()} onChange={(e) => setMidpointSnap(e.currentTarget.checked)}></input>
+            <input
+              type="checkbox"
+              checked={midpointSnap()}
+              onChange={(e) => setMidpointSnap(e.currentTarget.checked)}
+            ></input>
           </label>
           <label>
             Endpoint
-            <input type="checkbox" checked={endpointSnap()} onChange={(e) => setEndpointSnap(e.currentTarget.checked)}></input>
-          </label>
+            <input
+              type="checkbox"
+              checked={endpointSnap()}
+              onChange={(e) => setEndpointSnap(e.currentTarget.checked)}
+            ></input>
+                  </label>
+            </div>
+
+    
+
+          <div>
           <label>
             Centerpoint
-            <input type="checkbox" checked={centerpointSnap()} onChange={(e) => setCenterpointSnap(e.currentTarget.checked)}></input>
+            <input
+              type="checkbox"
+              checked={centerpointSnap()}
+              onChange={(e) => setCenterpointSnap(e.currentTarget.checked)}
+            ></input>
           </label>
+          
           <label>
             Quadrant
-            <input type="checkbox" checked={quadrantSnap()} onChange={(e) => setQuadrantSnap(e.currentTarget.checked)}></input>
+            <input
+              type="checkbox"
+              checked={quadrantSnap()}
+              onChange={(e) => setQuadrantSnap(e.currentTarget.checked)}
+            ></input>
           </label>
+          </div>
+          </div>
         </div>
 
         <div style="margin-bottom: 10px; margin-top: 10px;">
-          <label class="topLabel">Snap range size:</label>
+          <label style="font-weight: bold;" class="topLabel">Snap range size:</label>
           <input
             id="snapRangeControl"
             type="range"
@@ -329,34 +345,56 @@ const App: Component = () => {
         </div>
 
         <div class="container">
-           <div class="row">
+          <div class="row">
             <div class="col">
-            <canvas
-              class="item left"
-              onMouseMove={showCoords}
-              width="300"
-              height="300"
-              id="drawingArea"
-            ></canvas>
-          </div>
-          <div class="col">
-            <label class="topLabel">Line data</label>
-            <textarea readonly cols="60" rows="3" id="lineData">
-            {lineStore.map((line) => `L: ${line.id}: \n`)}
-            </textarea>
-            <label class="topLabel">Circle data</label>
-            <textarea readonly cols="60" rows="3" id="circleData">
-            {circleStore.map((circle) => `C: ${circle.id}: \n`)}
-            </textarea>
-            <label class="topLabel">Selection data</label>
-            <textarea readonly cols="60" rows="2" id="selectionData">
-            {Array.from(selectionList.entries()).map(([key, point]) => `${key}: (${point.x}, ${point.y})\n`)}
-            </textarea>
-          </div>
+              <canvas
+                class="ns item left"
+                onMouseMove={showCoords}
+                onTouchStart={showCoords}
+                onTouchMove={showCoords}
+                onTouchEnd={leaveHandler}
+                onmouseleave={leaveHandler}
+                width="300"
+                height="300"
+                id="drawingArea"
+              ></canvas>
+            </div>
+            <div class="col">
+              <details>
+                <summary style='font-weight: bold;'>
+              Line data
+              </summary>
+              <div>
+              <textarea readonly cols="58" rows="3" id="lineData">
+                {lineStore.map((line) => `L: ${line.id}: \n`)}
+              </textarea>
+              </div>
+              </details>
+       <details>
+                    <summary  style='font-weight: bold;'>
+              Circle data
+              </summary>
+              <div>
+              <textarea readonly cols="58" rows="3" id="circleData">
+                {circleStore.map((circle) => `C: ${circle.id}: \n`)}
+              </textarea>
+              </div>
+            </details>
+              <div>
+                <details open>
+               <summary style='font-weight: bold;'>
+                Selection Data </summary>
+              <textarea readonly cols="58" rows="4" id="selectionData">
+                {Array.from(selectionList.entries()).map(
+                  ([key, point]) => `${key}: (${point.x}, ${point.y})\n`
+                )}
+              </textarea>
+              </details>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
