@@ -1,0 +1,95 @@
+/**
+ * This file was taken from the cheatsheet example of bootstrap.
+ * You will most likely remove it if using this template.
+ */
+
+h1 {
+  font-weight: bolder;
+  font-size: x-large;
+  user-select: none;
+  margin-bottom: 2px;
+}
+
+h2 {
+  font-weight: bolder;
+  font-size: medium;
+  user-select: none;
+  margin-bottom: 0px;
+}
+
+.instructions {
+  margin: 0px;
+}
+
+span {
+  font-size: small;
+  user-select: none;
+}
+
+label {
+  font-size: small;
+  user-select: none;
+  font-weight: bold;
+}
+
+.snapHeader {
+  font-size: medium;
+}
+
+.snapLabel {
+  line-height: 0.25em;
+  width: 90px;
+}
+
+.container {
+  margin-left: 0 !important;
+}
+
+button {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  user-select: none;
+}
+
+summary {
+  font-weight: bold;
+  font-size: small;
+  user-select: none;
+}
+
+textarea {
+  font-size: xx-small;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+
+.content {
+  margin: 1em;
+}
+
+input[type='checkbox'] {
+  margin-right: 1.5em;
+  margin-left: 0em;
+  margin-top: -5px;
+}
+
+canvas {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+}
+
+button {
+  height: 1.7em;
+  align-content: center;
+  vertical-align: middle;
+  align-items: center;
+  padding-top: 1px !important;
+}
+
+.ns {
+  touch-action: none;
+}
