@@ -86,17 +86,17 @@ const App: Component = () => {
   const selectAndHighlightIfNear = (
     geomPoint: Point,
     selectionPoint: Point,
-    redrawData: Line | Circle,
+    geomObject: Line | Circle,
     label: string,
     color: string
   ) => {
     if (distance(geomPoint, selectionPoint) < snapRange()) {
       drawHighlight(geomPoint, color);
-      addSelection(redrawData.id, label, geomPoint);
-      return redrawData.id;
+      addSelection(geomObject.id, label, geomPoint);
+      return geomObject.id;
     }
-    removeSelection(redrawData.id, label);
-    return redrawData.id;
+    removeSelection(geomObject.id, label);
+    return geomObject.id;
   };
 
   const nearAnyMidPoint = (selectionPoint: Point) => {
