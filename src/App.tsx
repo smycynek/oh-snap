@@ -29,7 +29,7 @@ const PURPLE = '#FF00FF';
 export const TRANSPARENT_GREY = '#0000001f';
 
 const App: Component = () => {
-  const [snapRange, setSnapRange] = createSignal(20);
+  const [snapRange, setSnapRange] = createSignal(60);
   const [endpointSnap, setEndpointSnap] = createSignal(true);
   const [midpointSnap, setMidpointSnap] = createSignal(true);
   const [centerpointSnap, setCenterpointSnap] = createSignal(true);
