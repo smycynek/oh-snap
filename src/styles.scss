@@ -3,6 +3,9 @@
  * You will most likely remove it if using this template.
  */
 
+div {
+  user-select: none;
+}
 h1 {
   font-weight: bolder;
   font-size: x-large;
@@ -25,21 +28,22 @@ span {
   font-size: small;
   user-select: none;
 }
+
 a {
   font-size: small;
 }
+
 label {
-  font-size: small;
+  font-size: smaller;
   user-select: none;
-  font-weight: bold;
 }
 
 .snapHeader {
   font-size: medium;
+  font-weight: bold;
 }
 
 .snapLabel {
-  line-height: 0.25em;
   width: 90px;
 }
 
@@ -56,7 +60,6 @@ button {
 }
 
 summary {
-  font-weight: bold;
   font-size: small;
   user-select: none;
 }
@@ -78,10 +81,15 @@ input[type='checkbox'] {
   margin-top: -5px;
 }
 
+input[type='range'] {
+  vertical-align: middle;
+}
+
 canvas {
   border-color: black;
   border-style: solid;
   border-width: 1px;
+  user-select: none;
 }
 
 button {

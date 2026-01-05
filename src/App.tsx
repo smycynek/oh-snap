@@ -29,7 +29,7 @@ const PURPLE = '#FF00FF';
 export const TRANSPARENT_GREY = '#0000001f';
 
 const App: Component = () => {
-  const [snapRange, setSnapRange] = createSignal(20);
+  const [snapRange, setSnapRange] = createSignal(60);
   const [endpointSnap, setEndpointSnap] = createSignal(true);
   const [midpointSnap, setMidpointSnap] = createSignal(true);
   const [centerpointSnap, setCenterpointSnap] = createSignal(true);
@@ -236,11 +236,11 @@ const App: Component = () => {
             Clear
           </button>
         </div>
-        <div style="margin-bottom: 0px; margin-top: 0px;">
+        <div style="margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px;">
           <label class="snapHeader" style="margin-right: 10px; margin-bottom: 0px;">
             Snap to
           </label>
-          <div style="margin-bottom: 1px; margin-top: 1px; padding-bottom: 1px; padding-top: 1px;">
+          <div style="margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px;">
             <label class="snapLabel">Midpoint</label>
             <input
               type="checkbox"
@@ -256,7 +256,7 @@ const App: Component = () => {
             ></input>
           </div>
 
-          <div style="margin-bottom: 1px; margin-top: 1px; padding-bottom: 1px; padding-top: 1px;">
+          <div style="margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px;">
             <label class="snapLabel">Centerpoint</label>
             <input
               type="checkbox"
@@ -290,7 +290,7 @@ const App: Component = () => {
 
       <div class="container">
         <div class="row">
-          <div class="col">
+          <div class="col-md-4">
             <canvas
               class="ns"
               onMouseMove={showCoords}
@@ -303,7 +303,9 @@ const App: Component = () => {
               id="drawingArea"
             ></canvas>
           </div>
-          <div class="col">
+        </div>
+        <div class="row">
+          <div class="col-md-4">
             <details>
               <summary>Line data</summary>
               <div>
@@ -323,7 +325,7 @@ const App: Component = () => {
             <div>
               <details open>
                 <summary>Selection Data </summary>
-                <textarea readonly cols="58" rows="4" id="selectionData">
+                <textarea readonly cols="58" rows="3" id="selectionData">
                   {Array.from(selectionList.entries()).map(
                     ([key, point]) => `${key}: (${point.x}, ${point.y})\n`
                   )}
