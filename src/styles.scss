@@ -3,6 +3,12 @@
  * You will most likely remove it if using this template.
  */
 
+html,
+body {
+  user-select: none;
+  touch-action: none;
+}
+
 div {
   user-select: none;
 }

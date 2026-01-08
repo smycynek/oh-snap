@@ -33,11 +33,13 @@ export const getCurrentPosition = (moveEvent: MouseEvent | TouchEvent) => {
       x: moveEvent.clientX - (rect.left + offset),
       y: moveEvent.clientY - (rect.top + offset),
     };
-  } else
+  } else {
+    const touchOffset = 30; // to account for finger size
     return {
-      x: moveEvent.touches[0].clientX - (rect.left + offset),
-      y: moveEvent.touches[0].clientY - (rect.top + offset),
+      x: moveEvent.touches[0].clientX - (rect.left + offset) + touchOffset,
+      y: moveEvent.touches[0].clientY - (rect.top + offset) - touchOffset,
     };
+  }
 };
 
 export const getContext = (): CanvasRenderingContext2D =>
