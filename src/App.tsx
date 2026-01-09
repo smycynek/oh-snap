@@ -39,6 +39,7 @@ const App: Component = () => {
   const selectionList = new ReactiveMap<string, Point>();
 
   const leaveHandler = () => {
+    console.log('leave');
     selectionList.clear();
     clearAll();
   };
@@ -49,7 +50,13 @@ const App: Component = () => {
     redrawAll();
   };
 
+  let lastTouch = false;
+
   const showCoords = (e: MouseEvent | TouchEvent) => {
+    console.log(e.type);
+    if (e.type === 'touchstart') {
+      lastTouch = true;
+    }
     clearAll();
     const resultPoint = getCurrentPosition(e);
 
@@ -67,6 +74,10 @@ const App: Component = () => {
 
     if (quadrantSnap()) {
       nearAnyQuadrantPoint(resultPoint);
+    }
+    if (e.type === 'mousemove' && lastTouch) {
+      leaveHandler();
+      return;
     }
     drawSnapArea(new Circle(resultPoint.x, resultPoint.y, snapRange()));
   };
