@@ -38,6 +38,11 @@ const App: Component = () => {
   const circleStore = createMutable<Circle[]>([]);
   const selectionList = new ReactiveMap<string, Point>();
 
+  const contextMenuHandler = (e: MouseEvent) => {
+    console.log('contextMenu');
+    e.preventDefault();
+  };
+
   const leaveHandler = () => {
     console.log('leave');
     selectionList.clear();
@@ -51,6 +56,14 @@ const App: Component = () => {
   };
 
   let lastTouch = false;
+
+  const mouseEnterHandler = () => {
+    lastTouch = false;
+  };
+  const mouseLeaveHandler = () => {
+    lastTouch = false;
+    leaveHandler();
+  };
 
   const showCoords = (e: MouseEvent | TouchEvent) => {
     console.log(e.type);
@@ -76,6 +89,7 @@ const App: Component = () => {
       nearAnyQuadrantPoint(resultPoint);
     }
     if (e.type === 'mousemove' && lastTouch) {
+      e.preventDefault();
       leaveHandler();
       return;
     }
@@ -308,7 +322,9 @@ const App: Component = () => {
               onTouchStart={showCoords}
               onTouchMove={showCoords}
               onTouchEnd={leaveHandler}
-              onmouseleave={leaveHandler}
+              onmouseleave={mouseLeaveHandler}
+              onmouseenter={mouseEnterHandler}
+              oncontextmenu={contextMenuHandler}
               width="300"
               height="300"
               id="drawingArea"

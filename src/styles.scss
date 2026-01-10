@@ -7,23 +7,23 @@ html,
 body {
   user-select: none;
   touch-action: none;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
 }
 
 div {
-  user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
 }
 h1 {
   font-weight: bolder;
   font-size: x-large;
-  user-select: none;
-  margin-bottom: 2px;
 }
 
 h2 {
   font-weight: bolder;
   font-size: medium;
-  user-select: none;
-  margin-bottom: 0px;
 }
 
 .instructions {
@@ -32,7 +32,6 @@ h2 {
 
 span {
   font-size: small;
-  user-select: none;
 }
 
 a {
@@ -41,7 +40,6 @@ a {
 
 label {
   font-size: smaller;
-  user-select: none;
 }
 
 .snapHeader {
@@ -95,7 +93,6 @@ canvas {
   border-color: black;
   border-style: solid;
   border-width: 1px;
-  user-select: none;
 }
 
 button {
@@ -107,5 +104,4 @@ button {
 }
 
 .ns {
-  touch-action: none;
 }
