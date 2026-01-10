@@ -34,25 +34,11 @@ for tool in "${tools[@]}"; do
     fi
 done
 
-rm -rf dist # Remove old build
-rm -rf $APP
-rm "$APP.zip"
 
-bun run build
-
-# rename output folder
-mv dist "$APP"
-
-# compress output
-zip -vr "$APP".zip "$APP"
-
-# copy zip to site
-scp "$APP".zip "$SITE":public_html
 
 # unzip zip at site, exit
-export SHELL_COMMAND="cd public_html; rm -rf $APP;  unzip $APP.zip; rm $APP.zip; exit; bash"
+export SHELL_COMMAND="cd public_html; cd $APP; ls -l; cd assets; ls -l;"
 echo "$SHELL_COMMAND"
 ssh -t "$SITE" "$SHELL_COMMAND"
-scp src/assets/manifest.json "$SITE":public_html/"$APP"/manifest.json
-scp src/assets/preview.png "$SITE":public_html/"$APP"/preview.png
-scp src/assets/favicon.ico "$SITE":public_html/"$APP"/favicon.ico
+cd ../..
+
