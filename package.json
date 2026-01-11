@@ -1,7 +1,7 @@
 {
-  "name": "vite-template-solid",
+  "name": "Oh, snap!",
   "version": "0.0.0",
-  "description": "",
+  "description": "Oh, snap!",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -24,6 +24,7 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.50.1",
     "vite": "^7.1.4",
+    "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-solid": "^2.11.8"
   },
   "dependencies": {
