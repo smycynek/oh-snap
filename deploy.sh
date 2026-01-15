@@ -55,4 +55,5 @@ echo "$SHELL_COMMAND"
 ssh -t "$SITE" "$SHELL_COMMAND"
 scp src/assets/manifest.json "$SITE":public_html/"$APP"/manifest.json
 scp src/assets/preview.png "$SITE":public_html/"$APP"/preview.png
+scp src/previewI.png "$SITE":public_html/"$APP"/previewI.png
 scp src/assets/favicon.ico "$SITE":public_html/"$APP"/favicon.ico
